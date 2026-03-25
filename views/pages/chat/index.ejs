@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('../../common/header', { title: "Chat" }) %>
+    <body>
+        <h1>Chat</h1>
+        <%- include('../../common/nav') %>
+        <ul>
+            <% for ( let msg of msgs ) { %>
+                <li id="msg-<%= msg.id %>">
+                    <form action="/chat/edit" method="post">
+                        <input type="hidden" name="id" value="<%= msg.id %>" />
+                        <p>Last modified: <%= msg.lastModified %></p>
+                        <input type="text" name="name" placeholder="Display name" value="<%= msg.name %>" />
+                        <input type="text" name="content" placeholder="Say something..." value="<%= msg.content %>" />
+                        <input type="submit" value="Edit" title="Edit" class="btn" />
+                    </form>
+                    <form action="/chat/delete" method="post">
+                        <input type="hidden" name="id" value="<%= msg.id %>" />
+                        <input type="submit" value="Delete" title="Delete" class="btn" />
+                    </form>
+                </li>
+            <% } %>
+        </ul>
+        <a href="?page=<%= page + 1 %>">Previous</a>
+        <% if (page > 1) { %>
+            <a href="?page=<%= page - 1 %>">Next</a>
+        <% } %>
+        <form action="/chat/send" method="post">
+            <input type="text" name="name" placeholder="Display name" />
+            <textarea id="content" name="content" placeholder="Say something..."></textarea>
+            <input type="submit" value="Send" title="Send" class="btn btn-primary" />
+        </form>
+    </body>
+    <%- include('../../common/scripts') %>
+</html>

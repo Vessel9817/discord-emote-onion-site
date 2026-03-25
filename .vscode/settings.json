@@ -1,0 +1,20 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "js/ts.tsdk.path": "./node_modules/typescript/lib",
+  // https://github.com/microsoft/vscode-eslint/issues/1966
+  "eslint.workingDirectories": ["."],
+  "eslint.options": {
+    "overrideConfigFile": "./onion-website/src/eslint/eslint.config.ts"
+  },
+  "sonarlint.analysisExcludesStandalone": "**/node_modules/**",
+  "search.exclude": {
+    "**/*.bundle.js": true,
+    "**/node_modules": true,
+    "**/bower_components": true
+  },
+  "files.associations": {
+    "*.env.*": "properties"
+  }
+}

@@ -1,0 +1,3 @@
+[submodule "onion-website"]
+	path = onion-website
+	url = https://github.com/Vessel9817/discord-emote-onion-site

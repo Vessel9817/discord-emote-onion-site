@@ -1,0 +1,20 @@
+on:
+  push:
+
+env:
+  DOCKER_COMPOSE_VERSION: v5.1.0
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v2
+        with:
+          version: ${{ env.DOCKER_COMPOSE_VERSION }}
+      - name: Build Compose stack
+        run: docker compose --profile production --profile development build

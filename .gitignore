@@ -1,0 +1,37 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# Dependencies
+**/node_modules
+**/bower_components
+
+# Secrets
+**/.git
+**/.DS_Store
+**/.history
+**/secrets/**
+**/secrets.*js
+**/secrets.*ts
+**/secrets.json
+**/secrets.*.json
+**/*.env
+**/*.env.*
+!**/*.env.example
+
+# Development
+/coverage
+
+# Deployment
+**/build
+**/dist
+**/*.min.*
+**/*.bundle.*
+**/*.map.js
+
+# Temporary files
+**/tmp
+**/temp
+**/backup
+**/cache
+**/logs
+**/*.log
+**/*.old
