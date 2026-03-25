@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          submodules: true
       - name: Set up Docker Compose
         uses: docker/setup-compose-action@v2
         with:
