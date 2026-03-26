@@ -27,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: ./onion-website/src/express/Dockerfile
+    env_file: ./secrets/express/.env
   express-debug:
     extends:
       service: express-debug
@@ -35,6 +36,7 @@ services:
     extends:
       service: mongo
       file: ./onion-website/docker-compose.yml
+    env_file: ./secrets/mongo/.env
 secrets:
   express:
     file: ./onion-website/src/express/secrets/

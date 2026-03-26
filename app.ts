@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
-import { MONGODB_URI } from './env';
+import { emotes } from './env';
 import { blockTrace } from './middleware';
 import { APP_ROUTER, NOT_FOUND_ROUTER } from './routes';
 
@@ -21,7 +21,7 @@ APP.use('/', NOT_FOUND_ROUTER); // Catches errors
 // Starting server
 void (async () => {
     try {
-        await mongoose.connect(MONGODB_URI);
+        await mongoose.connect(emotes.uri);
     }
     catch (err) {
         console.error('Failed to connect to database:', err);
