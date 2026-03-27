@@ -6,10 +6,12 @@ and stickers.
 ## Secrets
 
 - [./onion-website/src/mongo/secrets/.env.example](./onion-website/src/mongo/secrets/.env.example)
-- [./onion-website/src/mongo/secrets/root_username](./onion-website/src/mongo/secrets/root_username)
-- [./onion-website/src/mongo/secrets/root_password](./onion-website/src/mongo/secrets/root_password)
-- [./onion-website/src/mongo/secrets/username](./onion-website/src/mongo/secrets/username)
-- [./onion-website/src/mongo/secrets/password](./onion-website/src/mongo/secrets/password)
+- [./onion-website/src/mongo/secrets/root/username.txt.example](./onion-website/src/mongo/secrets/root/username.txt.example)
+- [./onion-website/src/mongo/secrets/root/password.txt.example](./onion-website/src/mongo/secrets/root/password.txt.example)
+- [./onion-website/src/mongo/secrets/express/username.txt.example](./onion-website/src/mongo/secrets/express/username.txt.example)
+- [./onion-website/src/mongo/secrets/express/password.txt.example](./onion-website/src/mongo/secrets/express/password.txt.example)
+- [./onion-website/src/mongo/secrets/dev/username.txt.example](./onion-website/src/mongo/secrets/dev/username.txt.example)
+- [./onion-website/src/mongo/secrets/dev/password.txt.example](./onion-website/src/mongo/secrets/dev/password.txt.example)
 - [./secrets/.env.example](./secrets/.env.example)
 
 ## Commands
