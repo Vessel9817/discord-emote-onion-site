@@ -3,16 +3,27 @@
 A basic tor website where users can save and search for Discord emojis
 and stickers.
 
-## Secrets
+## Setup
+
+Rename the following files to remove the `.example` postfix:
 
 - [./onion-website/src/mongo/secrets/.env.example](./onion-website/src/mongo/secrets/.env.example)
 - [./onion-website/src/mongo/secrets/root/username.txt.example](./onion-website/src/mongo/secrets/root/username.txt.example)
 - [./onion-website/src/mongo/secrets/root/password.txt.example](./onion-website/src/mongo/secrets/root/password.txt.example)
 - [./onion-website/src/mongo/secrets/express/username.txt.example](./onion-website/src/mongo/secrets/express/username.txt.example)
 - [./onion-website/src/mongo/secrets/express/password.txt.example](./onion-website/src/mongo/secrets/express/password.txt.example)
+- [./secrets/.env.example](./secrets/.env.example)
+
+The same goes with these files, except that these values should be memorable:
+
 - [./onion-website/src/mongo/secrets/dev/username.txt.example](./onion-website/src/mongo/secrets/dev/username.txt.example)
 - [./onion-website/src/mongo/secrets/dev/password.txt.example](./onion-website/src/mongo/secrets/dev/password.txt.example)
-- [./secrets/.env.example](./secrets/.env.example)
+
+Although this project will work with the example credentials
+in each of these files, **for your own security, please change them.**
+
+For more information about configuring an existing onion domain, see the
+[upstream's README](./onion-website/README.md#tor)
 
 ## Commands
 
