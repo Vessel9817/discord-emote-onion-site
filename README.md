@@ -3,6 +3,15 @@
 A basic tor website where users can save and search for Discord emojis
 and stickers.
 
+## Secrets
+
+- [./onion-website/src/mongo/secrets/.env.example](./onion-website/src/mongo/secrets/.env.example)
+- [./onion-website/src/mongo/secrets/root_username](./onion-website/src/mongo/secrets/root_username)
+- [./onion-website/src/mongo/secrets/root_password](./onion-website/src/mongo/secrets/root_password)
+- [./onion-website/src/mongo/secrets/username](./onion-website/src/mongo/secrets/username)
+- [./onion-website/src/mongo/secrets/password](./onion-website/src/mongo/secrets/password)
+- [./secrets/.env.example](./secrets/.env.example)
+
 ## Commands
 
 ### Build

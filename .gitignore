@@ -8,8 +8,8 @@
 **/.git
 **/.DS_Store
 **/.history
-**/secrets*
-**/*.env*
+**/*.env
+**/*.env.*
 !**/*.env.example
 
 # Development
