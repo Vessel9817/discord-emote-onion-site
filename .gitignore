@@ -8,11 +8,6 @@
 **/.git
 **/.DS_Store
 **/.history
-**/secrets/**
-**/secrets.*js
-**/secrets.*ts
-**/secrets.json
-**/secrets.*.json
 **/*.env
 **/*.env.*
 !**/*.env.example

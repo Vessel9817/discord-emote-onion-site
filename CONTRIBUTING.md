@@ -11,4 +11,4 @@ auto-formatter with:
 npm run eslint:fix
 ```
 
-[issues]: https://github.com/Vessel9817/onion-site-template/issues
+[issues]: https://github.com/Vessel9817/discord-emote-onion-site/issues

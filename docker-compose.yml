@@ -35,9 +35,27 @@ services:
     extends:
       service: mongo
       file: ./onion-website/docker-compose.yml
+  mongo-debug:
+    extends:
+      service: mongo-debug
+      file: ./onion-website/docker-compose.yml
 secrets:
   express:
-    file: ./onion-website/src/express/secrets/
+    file: ./secrets/
+  mongo-config:
+    file: ./onion-website/src/mongo/secrets/.env
+  mongo-root-username:
+    file: ./onion-website/src/mongo/secrets/root/username.txt
+  mongo-root-password:
+    file: ./onion-website/src/mongo/secrets/root/password.txt
+  mongo-username:
+    file: ./onion-website/src/mongo/secrets/express/username.txt
+  mongo-password:
+    file: ./onion-website/src/mongo/secrets/express/password.txt
+  mongo-dev-username:
+    file: ./onion-website/src/mongo/secrets/dev/username.txt
+  mongo-dev-password:
+    file: ./onion-website/src/mongo/secrets/dev/password.txt
 volumes:
   tor-data:
   mongo-db:
