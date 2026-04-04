@@ -1,16 +1,8 @@
 name: emote-website
 services:
-  tor-init:
-    extends:
-      service: tor-init
-      file: ./onion-website/docker-compose.yml
   tor:
     extends:
       service: tor
-      file: ./onion-website/docker-compose.yml
-  vanguards:
-    extends:
-      service: vanguards
       file: ./onion-website/docker-compose.yml
   nginx:
     extends:
@@ -40,6 +32,8 @@ services:
       service: mongo-debug
       file: ./onion-website/docker-compose.yml
 secrets:
+  tor-hostname:
+    file: ./onion-website/src/tor/secrets/hostname
   express:
     file: ./secrets/
   mongo-config:
@@ -57,7 +51,6 @@ secrets:
   mongo-dev-password:
     file: ./onion-website/src/mongo/secrets/dev/password.txt
 volumes:
-  tor-data:
   mongo-db:
   mongo-configdb:
 networks:
