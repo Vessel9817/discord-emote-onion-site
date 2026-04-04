@@ -22,8 +22,8 @@ The same goes with these files, except that these values should be memorable:
 Although this project will work with the example credentials
 in each of these files, **for your own security, please change them.**
 
-For more information about configuring an existing onion domain, see the
-[upstream's README](./onion-website/README.md#tor)
+For more information about configuring an onion domain, see the
+[onion-website README](./onion-website/README.md#tor)
 
 ## Commands
 
@@ -41,7 +41,7 @@ Exposes the website to the tor network.
 Can be executed before or after [Start (development)](#start-development).
 
 ```shell
-docker compose --profile production up -d vanguards
+docker compose --profile production up -d tor
 ```
 
 ### Start (development)
@@ -60,5 +60,5 @@ Undoes both [Start (development)](#start-development)
 and [Start (production)](#start-production).
 
 ```shell
-docker compose --profile production --profile development down --remove-orphans && docker volume rm -f emote-website_tor-data
+docker compose --profile production --profile development down --remove-orphans
 ```
