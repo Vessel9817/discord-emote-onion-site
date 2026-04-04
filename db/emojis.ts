@@ -60,7 +60,7 @@ export async function update(partialEmojis: PartialEmoji[] | Map<string, Partial
         ],
         {
             upsert: true,
-            $let: {
+            let: {
                 // Defaulting fields in case we're creating a new document
                 name: {
                     $cond: {

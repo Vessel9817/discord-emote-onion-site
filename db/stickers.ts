@@ -64,7 +64,7 @@ export async function update(partialStickers: PartialSticker[] | Map<string, Par
         ],
         {
             upsert: true,
-            $let: {
+            let: {
                 // Defaulting fields in case we're creating a new document
                 name: {
                     $cond: {
