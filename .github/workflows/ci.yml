@@ -1,5 +1,8 @@
+name: CI
+
 on:
   push:
+  pull_request:
 
 env:
   DOCKER_COMPOSE_VERSION: v5.1.0
@@ -20,3 +23,20 @@ jobs:
           version: ${{ env.DOCKER_COMPOSE_VERSION }}
       - name: Build Compose stack
         run: docker compose --profile production --profile development build
+  tsc:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [24.x]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install node modules
+        run: npm i
+      - name: Run tsc
+        run: npm run tsc
