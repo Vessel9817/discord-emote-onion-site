@@ -15,7 +15,8 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node --env-file=./secrets/.env -r ts-node/register ./app.ts"
+        "start": "node --env-file=./secrets/.env -r ts-node/register ./app.ts",
+        "tsc": "tsc --noEmit"
     },
     "dependencies": {
         "cors": "^2.8.6",
