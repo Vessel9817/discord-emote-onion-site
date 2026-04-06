@@ -1,1 +1,1 @@
-export * as HomeController from './home';
+export * as HomeController from './home.ts';

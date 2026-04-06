@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { emotes } from '../env';
 
 export interface Sticker {
     readonly id: string;
@@ -15,14 +14,14 @@ export const StickerSchema = new Schema({
     ext: String
 });
 
-export const StickerModel = mongoose.model(emotes.stickers, StickerSchema);
+export const StickerModel = mongoose.model('stickers', StickerSchema);
 
 export async function get(ids: string[]) {
     if (ids.length < 1) {
         return [];
     }
 
-    return await StickerModel.find({
+    return await StickerModel.find<Sticker>({
         id: {
             $in: ids
         }
@@ -77,16 +76,16 @@ export async function update(partialStickers: PartialSticker[] | Map<string, Par
                     $cond: {
                         if: { ext: { $exists: true } },
                         then: '$$ext',
-                        else: ''
+                        else: 'png'
                     }
                 },
                 // Initializing new fields
                 map: newEntries,
                 newEntry: '$$map.$$id',
                 newName: { $ifNull: ['$$newEntry.name', ''] },
-                newExt: '$$newEntry.ext',
+                newExt: { $ifNull: ['$$newEntry.ext', 'png'] },
                 precedence: {
-                    // Prefer animated and portable file types
+                    // Prefer animation, then portability
                     png: 0,
                     json: 1,
                     apng: 2,

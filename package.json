@@ -3,6 +3,7 @@
     "version": "0.0.0",
     "license": "MIT",
     "main": "app.ts",
+    "type": "module",
     "private": true,
     "repository": {
         "type": "git",
@@ -14,7 +15,7 @@
         "url": "https://github.com/Vessel9817/discord-emote-onion-site/issues"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha --exit --fail-zero --require ts-node/register test/**/*.spec.ts",
         "start": "node --env-file=./secrets/.env -r ts-node/register ./app.ts",
         "tsc": "tsc --noEmit"
     },
@@ -28,7 +29,11 @@
     "devDependencies": {
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
+        "@types/mocha": "^10.0.10",
+        "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^25.5.0",
+        "mocha": "^11.7.5",
+        "mongodb-memory-server": "^11.0.1",
         "ts-node": "^10.9.2",
         "tslib": "^2.8.1",
         "typescript": "^6.0.2"

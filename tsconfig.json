@@ -18,6 +18,8 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "allowImportingTsExtensions": true,
+        "rewriteRelativeImportExtensions": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
@@ -42,10 +44,5 @@
         "**/tmp/",
         "**/dist/",
         "onion-website"
-    ],
-    "ts-node": {
-        "compilerOptions": {
-            "module": "CommonJS" // Required for ts-node
-        }
-    }
+    ]
 }

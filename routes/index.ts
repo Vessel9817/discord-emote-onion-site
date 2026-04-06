@@ -1,6 +1,6 @@
-import APP_ROUTER from './app';
-import ERROR_ROUTER from './error';
-import NOT_FOUND_ROUTER from './notFound';
+import APP_ROUTER from './app.ts';
+import ERROR_ROUTER from './error.ts';
+import NOT_FOUND_ROUTER from './notFound.ts';
 
 export {
     APP_ROUTER,

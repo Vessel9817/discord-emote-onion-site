@@ -1,2 +1,3 @@
-export * from './blockTrace';
-export * from './errors';
+export * from './blockTrace.ts';
+export * from './errors.ts';
+

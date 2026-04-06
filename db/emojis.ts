@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import { emotes } from '../env';
 
 export interface Emoji {
     id: string;
@@ -15,14 +14,14 @@ export const EmojiSchema = new Schema({
     animated: Boolean
 });
 
-export const EmojiModel = mongoose.model(emotes.emojis, EmojiSchema);
+export const EmojiModel = mongoose.model('emojis', EmojiSchema);
 
 export async function get(ids: string[]) {
     if (ids.length < 1) {
         return [];
     }
 
-    return await EmojiModel.find({
+    return await EmojiModel.find<Emoji>({
         id: {
             $in: ids
         }

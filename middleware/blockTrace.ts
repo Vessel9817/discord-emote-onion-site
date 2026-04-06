@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { http } from '../utils';
+import { http } from '../utils/constants.ts';
 
 /**
  * For security reasons, blocks the TRACE method
