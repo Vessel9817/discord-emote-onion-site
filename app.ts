@@ -19,15 +19,13 @@ APP.use('/', APP_ROUTER); // Serves app
 APP.use('/', NOT_FOUND_ROUTER); // Catches errors
 
 // Starting server
-void (async () => {
-    try {
-        await mongoose.connect(emotes.uri);
-    }
-    catch (err) {
-        console.error('Failed to connect to database:', err);
-    }
+try {
+    await mongoose.connect(emotes.uri);
+}
+catch (err) {
+    console.error('Failed to connect to database:', err);
+}
 
-    APP.listen(PORT, () => {
-        console.log('Server is running!');
-    });
-})();
+APP.listen(PORT, () => {
+    console.log('Server is running!');
+});
