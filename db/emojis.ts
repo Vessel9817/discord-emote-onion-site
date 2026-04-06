@@ -21,65 +21,33 @@ export async function get(ids: string[]) {
         return [];
     }
 
-    return await EmojiModel.find<Emoji>({
-        id: {
-            $in: ids
-        }
-    });
+    return await EmojiModel.find({ id: { $in: ids } });
 }
 
-export async function update(partialEmojis: PartialEmoji[] | Map<string, PartialEmoji>) {
-    const newEntries = Object.fromEntries(partialEmojis instanceof Map
-        ? partialEmojis
-        : partialEmojis.map((e) => [e.id, e]));
+export async function update(partialEmojis: PartialEmoji[]) {
+    const ids = partialEmojis.map((p) => p.id);
+    const oldEmojis = new Map((await get(ids)).map((e) => [e.id, e]));
+    const emojis: Emoji[] = partialEmojis.map((newEmoji) => {
+        const oldEmoji = oldEmojis.get(newEmoji.id);
+        const newName = newEmoji.name ?? '';
 
-    return await EmojiModel.updateMany(
-        {
-            id: {
-                $in: Object.keys(newEntries)
+        return {
+            id: newEmoji.id,
+            name: newName.length > 0 ? newName : (oldEmoji?.name ?? ''),
+            animated: oldEmoji?.animated === true || (newEmoji.animated ?? false)
+        };
+    });
+    const writes: Parameters<typeof EmojiModel.bulkWrite>[0] = [];
+
+    for (const emoji of emojis) {
+        writes.push({
+            updateOne: {
+                filter: { id: emoji.id },
+                update: emoji,
+                upsert: true
             }
-        },
-        [
-            {
-                $set: {
-                    name: {
-                        // If new name isn't blank, use it
-                        $cond: {
-                            if: { $eq: ['$$newName', ''] },
-                            then: { $ifNull: ['$$name', ''] },
-                            else: '$$newName'
-                        }
-                    },
-                    animated: {
-                        // Prefer animation
-                        $or: ['$$animated', '$$newEntry.animated']
-                    }
-                }
-            }
-        ],
-        {
-            upsert: true,
-            let: {
-                // Defaulting fields in case we're creating a new document
-                name: {
-                    $cond: {
-                        if: { name: { $exists: true } },
-                        then: '$$name',
-                        else: ''
-                    }
-                },
-                animated: {
-                    $cond: {
-                        if: { ext: { $exists: true } },
-                        then: '$$animated',
-                        else: false
-                    }
-                },
-                // Initializing new fields
-                map: newEntries,
-                newEntry: '$$map.$$id',
-                newName: { $ifNull: ['$$newEntry.name', ''] }
-            }
-        }
-    );
+        });
+    }
+    
+    return await EmojiModel.bulkWrite(writes);
 }
