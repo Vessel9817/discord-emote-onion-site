@@ -35,13 +35,13 @@ describe('Emojis collection', () => {
         // Retrieving emojis
         const emojis = await Emojis.get([emoji1.id, emoji2.id]);
 
-        assert(emojis.length === 2);
-        assert(emojis[0].id === emoji1.id);
-        assert(emojis[0].name === emoji1.name);
-        assert(emojis[0].animated === emoji1.animated);
-        assert(emojis[1].id === emoji2.id);
-        assert(emojis[1].name === emoji2.name);
-        assert(emojis[1].animated === emoji2.animated);
+        assert.strictEqual(emojis.length, 2);
+        assert.strictEqual(emojis[0].id, emoji1.id);
+        assert.strictEqual(emojis[0].name, emoji1.name);
+        assert.strictEqual(emojis[0].animated, emoji1.animated);
+        assert.strictEqual(emojis[1].id, emoji2.id);
+        assert.strictEqual(emojis[1].name, emoji2.name);
+        assert.strictEqual(emojis[1].animated, emoji2.animated);
     });
 
     describe('creates document', () => {
@@ -52,10 +52,10 @@ describe('Emojis collection', () => {
 
             const emojis = await Emojis.get([id]);
 
-            assert(emojis.length === 1);
-            assert(emojis[0].id === id);
-            assert(emojis[0].name === '');
-            assert(emojis[0].animated === false);
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, id);
+            assert.strictEqual(emojis[0].name, '');
+            assert.strictEqual(emojis[0].animated, false);
         });
 
         it('with preset fields', async () => {
@@ -65,14 +65,14 @@ describe('Emojis collection', () => {
                 animated: true
             };
 
-            await Emojis.update([{ id: emoji.id }]);
+            await Emojis.update([emoji]);
 
             const emojis = await Emojis.get([emoji.id]);
 
-            assert(emojis.length === 1);
-            assert(emojis[0].id === emoji.id);
-            assert(emojis[0].name === emoji.name);
-            assert(emojis[0].animated === emoji.animated);
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, emoji.id);
+            assert.strictEqual(emojis[0].name, emoji.name);
+            assert.strictEqual(emojis[0].animated, emoji.animated);
         });
     });
 
@@ -99,13 +99,13 @@ describe('Emojis collection', () => {
 
         const emojis = await Emojis.get([emoji1.id, emoji2.id]);
 
-        assert(emojis.length === 2);
-        assert(emojis[0].id === emoji1.id);
-        assert(emojis[0].name === emoji1.name);
-        assert(emojis[0].animated === emoji1.animated);
-        assert(emojis[1].id === emoji2.id);
-        assert(emojis[1].name === emoji2.name);
-        assert(emojis[1].animated === emoji2.animated);
+        assert.strictEqual(emojis.length, 2);
+        assert.strictEqual(emojis[0].id, emoji1.id);
+        assert.strictEqual(emojis[0].name, emoji1.name);
+        assert.strictEqual(emojis[0].animated, emoji1.animated);
+        assert.strictEqual(emojis[1].id, emoji2.id);
+        assert.strictEqual(emojis[1].name, emoji2.name);
+        assert.strictEqual(emojis[1].animated, emoji2.animated);
     });
 
     it('creates and updates documents', async () => {
@@ -132,13 +132,13 @@ describe('Emojis collection', () => {
 
         const emojis = await Emojis.get([emoji1.id, emoji2.id]);
 
-        assert(emojis.length === 2);
-        assert(emojis[0].id === emoji1.id);
-        assert(emojis[0].name === emoji1.name);
-        assert(emojis[0].animated === emoji1.animated);
-        assert(emojis[1].id === emoji2.id);
-        assert(emojis[1].name === emoji2.name);
-        assert(emojis[1].animated === emoji2.animated);
+        assert.strictEqual(emojis.length, 2);
+        assert.strictEqual(emojis[0].id, emoji1.id);
+        assert.strictEqual(emojis[0].name, emoji1.name);
+        assert.strictEqual(emojis[0].animated, emoji1.animated);
+        assert.strictEqual(emojis[1].id, emoji2.id);
+        assert.strictEqual(emojis[1].name, emoji2.name);
+        assert.strictEqual(emojis[1].animated, emoji2.animated);
     });
 
     describe('prioritizes', () => {
@@ -163,9 +163,9 @@ describe('Emojis collection', () => {
 
             const emojis = await Emojis.get([emoji.id]);
 
-            assert(emojis.length === 1);
-            assert(emojis[0].id === emoji.id);
-            assert(emojis[0].animated === true);
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, emoji.id);
+            assert.strictEqual(emojis[0].animated, true);
         });
 
         it('non-empty names', async () => {
@@ -189,9 +189,9 @@ describe('Emojis collection', () => {
 
             const emojis = await Emojis.get([emoji.id]);
 
-            assert(emojis.length === 1);
-            assert(emojis[0].id === emoji.id);
-            assert(emojis[0].name === 'test');
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, emoji.id);
+            assert.strictEqual(emojis[0].name, 'test');
         });
     });
 });
