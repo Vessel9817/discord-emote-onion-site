@@ -19,12 +19,12 @@ describe('Emojis collection', () => {
 
     it('retrieves documents', async () => {
         // Creating emojis
-        const emoji1 = {
+        const emoji1: Emojis.Emoji = {
             id: '111111111111111',
             name: 'number1',
             animated: false
         };
-        const emoji2 = {
+        const emoji2: Emojis.Emoji = {
             id: '222222222222222',
             name: 'number2',
             animated: true
@@ -78,12 +78,12 @@ describe('Emojis collection', () => {
 
     it('updates documents', async () => {
         // Creating emojis
-        const emoji1 = {
+        const emoji1: Emojis.Emoji = {
             id: '111111111111111',
             name: 'number1',
             animated: true
         };
-        const emoji2 = {
+        const emoji2: Emojis.Emoji = {
             id: '222222222222222',
             name: 'number2',
             animated: false
@@ -110,7 +110,7 @@ describe('Emojis collection', () => {
 
     it('creates and updates documents', async () => {
         // Creating emoji
-        const emoji1 = {
+        const emoji1: Emojis.Emoji = {
             id: '111111111111111',
             name: 'number1',
             animated: false
@@ -119,7 +119,7 @@ describe('Emojis collection', () => {
         await Emojis.update([emoji1]);
 
         // Creating and updating emojis
-        const emoji2 = {
+        const emoji2: Emojis.Emoji = {
             id: '222222222222222',
             name: 'number2',
             animated: false
@@ -144,7 +144,7 @@ describe('Emojis collection', () => {
     describe('prioritizes', () => {
         it('animation', async () => {
             // Creating emoji
-            const emoji = {
+            const emoji: Emojis.PartialEmoji = {
                 id: '111111111111111',
                 animated: false
             };
@@ -170,7 +170,7 @@ describe('Emojis collection', () => {
 
         it('non-empty names', async () => {
             // Creating emoji
-            const emoji = {
+            const emoji: Emojis.PartialEmoji = {
                 id: '111111111111111',
                 name: ''
             };

@@ -3,10 +3,10 @@ import mongoose, { Schema } from 'mongoose';
 export interface Sticker {
     readonly id: string;
     name: string;
-    ext: string;
+    ext: 'png' | 'json' | 'apng' | 'gif';
 }
 
-export type PartialSticker = Partial<Sticker> & { id: string };
+export type PartialSticker = Partial<Sticker> & { readonly id: string };
 
 export const StickerSchema = new Schema({
     id: String,
@@ -21,77 +21,45 @@ export async function get(ids: string[]) {
         return [];
     }
 
-    return await StickerModel.find<Sticker>({
-        id: {
-            $in: ids
-        }
-    });
+    return await StickerModel.find({ id: { $in: ids } });
 }
 
-export async function update(partialStickers: PartialSticker[] | Map<string, PartialSticker>) {
-    const newEntries = Object.fromEntries(partialStickers instanceof Map
-        ? partialStickers
-        : partialStickers.map((e) => [e.id, e]));
+export async function update(partialStickers: PartialSticker[]) {
+    const extPrecedence: Record<Sticker['ext'], number> = {
+        png: 0,
+        json: 1,
+        apng: 2,
+        gif: 3
+    };
+    const ids = partialStickers.map((p) => p.id);
+    const oldStickers = new Map((await get(ids)).map((e) => [e.id, e]));
+    const stickers: Sticker[] = partialStickers.map((newSticker) => {
+        const oldSticker = oldStickers.get(newSticker.id);
+        const newName = newSticker.name ?? '';
+        const newExt = newSticker.ext ?? 'png';
+        let prioritizedExt = (oldSticker?.ext ?? 'png') as Sticker['ext'];
 
-    return await StickerModel.updateMany(
-        {
-            id: {
-                $in: Object.keys(newEntries)
-            }
-        },
-        [
-            {
-                $set: {
-                    name: {
-                        // If new name isn't blank, use it
-                        $cond: {
-                            if: { $eq: ['$$newName', ''] },
-                            then: { $ifNull: ['$$name', ''] },
-                            else: '$$newName'
-                        }
-                    },
-                    ext: {
-                        // If new file type is preferred, use it
-                        $cond: {
-                            if: { $gt: ['$$precedence.$$ext', '$$precedence.$$newExt'] },
-                            then: '$$newExt',
-                            else: '$$ext'
-                        }
-                    }
-                }
-            }
-        ],
-        {
-            upsert: true,
-            let: {
-                // Defaulting fields in case we're creating a new document
-                name: {
-                    $cond: {
-                        if: { name: { $exists: true } },
-                        then: '$$name',
-                        else: ''
-                    }
-                },
-                ext: {
-                    $cond: {
-                        if: { ext: { $exists: true } },
-                        then: '$$ext',
-                        else: 'png'
-                    }
-                },
-                // Initializing new fields
-                map: newEntries,
-                newEntry: '$$map.$$id',
-                newName: { $ifNull: ['$$newEntry.name', ''] },
-                newExt: { $ifNull: ['$$newEntry.ext', 'png'] },
-                precedence: {
-                    // Prefer animation, then portability
-                    png: 0,
-                    json: 1,
-                    apng: 2,
-                    gif: 3
-                }
-            }
+        if (extPrecedence[newExt] > extPrecedence[prioritizedExt]) {
+            prioritizedExt = newExt;
         }
-    );
+
+        return {
+            id: newSticker.id,
+            name: newName.length > 0 ? newName : (oldSticker?.name ?? ''),
+            ext: prioritizedExt
+        };
+    });
+    const writes: Parameters<typeof StickerModel.bulkWrite>[0] = [];
+
+    for (const sticker of stickers) {
+        writes.push({
+            updateOne: {
+                filter: { id: sticker.id },
+                update: sticker,
+                upsert: true
+            }
+        });
+    }
+    
+    return await StickerModel.bulkWrite(writes);
 }
