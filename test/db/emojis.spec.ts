@@ -134,33 +134,62 @@ describe('Emojis collection', () => {
     });
 
     describe('get', () => {
-        it('retrieves documents', async () => {
-            // Creating emojis
-            const emoji1: Emojis.Emoji = {
-                id: '111111111111111',
-                name: 'number1',
-                animated: false
-            };
-            const emoji2: Emojis.Emoji = {
-                id: '222222222222222',
-                name: 'number2',
-                animated: true
-            };
+        describe('retrieves documents', () => {
+            it('from an array', async () => {
+                // Creating emojis
+                const emoji1: Emojis.Emoji = {
+                    id: '111111111111111',
+                    name: 'number1',
+                    animated: false
+                };
+                const emoji2: Emojis.Emoji = {
+                    id: '222222222222222',
+                    name: 'number2',
+                    animated: true
+                };
 
-            await Emojis.EmojiModel.insertMany([emoji1, emoji2]);
+                await Emojis.EmojiModel.insertMany([emoji1, emoji2]);
 
-            // Retrieving emojis
-            const emojis = await Emojis.get([emoji1.id, emoji2.id]);
+                // Retrieving emojis
+                const emojis = await Emojis.get([emoji1.id, emoji2.id]);
 
-            assert.strictEqual(emojis.length, 2);
-            assert.strictEqual(emojis[0].id, emoji1.id);
-            assert.strictEqual(emojis[0].name, emoji1.name);
-            assert.strictEqual(emojis[0].animated, emoji1.animated);
-            assert.strictEqual(emojis[1].id, emoji2.id);
-            assert.strictEqual(emojis[1].name, emoji2.name);
-            assert.strictEqual(emojis[1].animated, emoji2.animated);
+                assert.strictEqual(emojis.length, 2);
+                assert.strictEqual(emojis[0].id, emoji1.id);
+                assert.strictEqual(emojis[0].name, emoji1.name);
+                assert.strictEqual(emojis[0].animated, emoji1.animated);
+                assert.strictEqual(emojis[1].id, emoji2.id);
+                assert.strictEqual(emojis[1].name, emoji2.name);
+                assert.strictEqual(emojis[1].animated, emoji2.animated);
+            });
+
+            it('from a set', async () => {
+                // Creating emojis
+                const emoji1: Emojis.Emoji = {
+                    id: '111111111111111',
+                    name: 'number1',
+                    animated: false
+                };
+                const emoji2: Emojis.Emoji = {
+                    id: '222222222222222',
+                    name: 'number2',
+                    animated: true
+                };
+
+                await Emojis.EmojiModel.insertMany([emoji1, emoji2]);
+
+                // Retrieving emojis
+                const emojis = await Emojis.get(new Set([emoji1.id, emoji2.id]));
+
+                assert.strictEqual(emojis.length, 2);
+                assert.strictEqual(emojis[0].id, emoji1.id);
+                assert.strictEqual(emojis[0].name, emoji1.name);
+                assert.strictEqual(emojis[0].animated, emoji1.animated);
+                assert.strictEqual(emojis[1].id, emoji2.id);
+                assert.strictEqual(emojis[1].name, emoji2.name);
+                assert.strictEqual(emojis[1].animated, emoji2.animated);
+            });
         });
-    })
+    });
 
     describe('update', () => {
         describe('creates document', () => {
@@ -333,32 +362,32 @@ describe('Emojis collection', () => {
                 assert.strictEqual(emojis[0].id, emoji.id);
                 assert.strictEqual(emojis[0].name, 'def');
             });
-            
-            it('duplicate documents', async () => {
-                // Creating duplicate stickers with varied parameters
-                const emoji1: Emojis.Emoji = {
-                    id: '111111111111111',
-                    name: 'number1',
-                    animated: false
-                };
-                const emoji2: Emojis.Emoji = {
-                    id: emoji1.id,
-                    name: 'number2',
-                    animated: true
-                };
-                const emoji3: Emojis.PartialEmoji = {
-                    id: emoji1.id
-                };
+        });
 
-                await Emojis.update([emoji1, emoji2, emoji3]);
+        it('merges duplicate documents', async () => {
+            // Creating duplicate stickers with varied parameters
+            const emoji1: Emojis.Emoji = {
+                id: '111111111111111',
+                name: 'number1',
+                animated: false
+            };
+            const emoji2: Emojis.Emoji = {
+                id: emoji1.id,
+                name: 'number2',
+                animated: true
+            };
+            const emoji3: Emojis.PartialEmoji = {
+                id: emoji1.id
+            };
 
-                const emojis = await Emojis.get([emoji3.id]);
+            await Emojis.update([emoji1, emoji2, emoji3]);
 
-                assert.strictEqual(emojis.length, 1);
-                assert.strictEqual(emojis[0].id, emoji3.id);
-                assert.strictEqual(emojis[0].name, 'number2');
-                assert.strictEqual(emojis[0].animated, true);
-            });
+            const emojis = await Emojis.get([emoji3.id]);
+
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, emoji3.id);
+            assert.strictEqual(emojis[0].name, 'number2');
+            assert.strictEqual(emojis[0].animated, true);
         });
     });
 });

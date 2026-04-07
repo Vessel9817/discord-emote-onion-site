@@ -7,7 +7,7 @@ export interface Emoji {
     animated: boolean;
 }
 
-export type PartialEmoji = Partial<Emoji> & { id: string };
+export type PartialEmoji = { [P in keyof Emoji]?: Emoji[P] | null | undefined; } & { readonly id: string };
 
 export const EmojiSchema = new Schema({
     id: String,
@@ -17,12 +17,13 @@ export const EmojiSchema = new Schema({
 
 export const EmojiModel = mongoose.model('emojis', EmojiSchema);
 
-export async function get(ids: string[]) {
-    if (ids.length < 1) {
+export async function get(ids: string[] | Set<string>) {
+    if ((ids instanceof Set && ids.size < 1)
+            || (Array.isArray(ids) && ids.length < 1)) {
         return [];
     }
 
-    return await EmojiModel.find({ id: { $in: ids } });
+    return await EmojiModel.find({ id: { $in: [...ids] } });
 }
 
 /**
@@ -61,7 +62,6 @@ export function merge(
             : oldEmoji.name,
         animated: oldEmoji.animated || newEmoji.animated
     };
-
 }
 
 /**
@@ -70,13 +70,32 @@ export function merge(
 export async function update(
     partialEmojis: PartialEmoji[]
 ): Promise<mongoose.mongo.BulkWriteResult> {
-    const ids = partialEmojis.map((p) => p.id);
+    // Prioritizing properties
+    const ids = new Set(partialEmojis.map((p) => p.id));
     const oldEmojis = new Map<string, Emoji>(
         (await get(ids)).map((e) => [e.id, e as Emoji])
     );
-    const emojis: Emoji[] = partialEmojis.map((newEmoji) =>
+    let emojis: Emoji[] = partialEmojis.map((newEmoji) =>
         merge(oldEmojis.get(newEmoji.id), newEmoji)
     );
+
+    // Deduplicating IDs
+    if (ids.size < emojis.length) {
+        const dedupeMap = new Map<string, Emoji>();
+
+        for (const emoji of emojis) {
+            if (dedupeMap.has(emoji.id)) {
+                dedupeMap.set(emoji.id, merge(dedupeMap.get(emoji.id), emoji))
+            }
+            else {
+                dedupeMap.set(emoji.id, emoji);
+            }
+        }
+
+        emojis = [...dedupeMap.values()];
+    }
+
+    // Writing to DB
     const writes: Parameters<typeof EmojiModel.bulkWrite>[0] = [];
 
     for (const emoji of emojis) {

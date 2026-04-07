@@ -60,15 +60,15 @@ describe('Stickers collection', () => {
         });
 
         it('infers default values', () => {
-            const emoji: Stickers.PartialSticker = {
+            const sticker: Stickers.PartialSticker = {
                 id: '111111111111111'
             };
 
-            const newEmoji = Stickers.merge(emoji, emoji);
+            const newSticker = Stickers.merge(sticker, sticker);
 
-            assert.strictEqual(newEmoji.id, emoji.id);
-            assert.strictEqual(newEmoji.name, '');
-            assert.strictEqual(newEmoji.ext, 'png');
+            assert.strictEqual(newSticker.id, sticker.id);
+            assert.strictEqual(newSticker.name, '');
+            assert.strictEqual(newSticker.ext, 'png');
         });
 
         it('throws on mismatched IDs', () => {
@@ -166,33 +166,62 @@ describe('Stickers collection', () => {
     });
 
     describe('get', () => {
-        it('retrieves documents', async () => {
-            // Creating stickers
-            const sticker1: Stickers.Sticker = {
-                id: '111111111111111',
-                name: 'number1',
-                ext: 'png'
-            };
-            const sticker2: Stickers.Sticker = {
-                id: '222222222222222',
-                name: 'number2',
-                ext: 'gif'
-            };
+        describe('retrieves documents', () => {
+            it('from an array', async () => {
+                // Creating stickers
+                const sticker1: Stickers.Sticker = {
+                    id: '111111111111111',
+                    name: 'number1',
+                    ext: 'png'
+                };
+                const sticker2: Stickers.Sticker = {
+                    id: '222222222222222',
+                    name: 'number2',
+                    ext: 'gif'
+                };
 
-            await Stickers.StickerModel.insertMany([sticker1, sticker2]);
+                await Stickers.StickerModel.insertMany([sticker1, sticker2]);
 
-            // Retrieving stickers
-            const stickers = await Stickers.get([sticker1.id, sticker2.id]);
+                // Retrieving stickers
+                const stickers = await Stickers.get([sticker1.id, sticker2.id]);
 
-            assert.strictEqual(stickers.length, 2);
-            assert.strictEqual(stickers[0].id, sticker1.id);
-            assert.strictEqual(stickers[0].name, sticker1.name);
-            assert.strictEqual(stickers[0].ext, sticker1.ext);
-            assert.strictEqual(stickers[1].id, sticker2.id);
-            assert.strictEqual(stickers[1].name, sticker2.name);
-            assert.strictEqual(stickers[1].ext, sticker2.ext);
+                assert.strictEqual(stickers.length, 2);
+                assert.strictEqual(stickers[0].id, sticker1.id);
+                assert.strictEqual(stickers[0].name, sticker1.name);
+                assert.strictEqual(stickers[0].ext, sticker1.ext);
+                assert.strictEqual(stickers[1].id, sticker2.id);
+                assert.strictEqual(stickers[1].name, sticker2.name);
+                assert.strictEqual(stickers[1].ext, sticker2.ext);
+            });
+
+            it('from a set', async () => {
+                // Creating stickers
+                const sticker1: Stickers.Sticker = {
+                    id: '111111111111111',
+                    name: 'number1',
+                    ext: 'png'
+                };
+                const sticker2: Stickers.Sticker = {
+                    id: '222222222222222',
+                    name: 'number2',
+                    ext: 'gif'
+                };
+
+                await Stickers.StickerModel.insertMany([sticker1, sticker2]);
+
+                // Retrieving stickers
+                const stickers = await Stickers.get(new Set([sticker1.id, sticker2.id]));
+
+                assert.strictEqual(stickers.length, 2);
+                assert.strictEqual(stickers[0].id, sticker1.id);
+                assert.strictEqual(stickers[0].name, sticker1.name);
+                assert.strictEqual(stickers[0].ext, sticker1.ext);
+                assert.strictEqual(stickers[1].id, sticker2.id);
+                assert.strictEqual(stickers[1].name, sticker2.name);
+                assert.strictEqual(stickers[1].ext, sticker2.ext);
+            });
         });
-    })
+    });
 
     describe('update', () => {
         describe('creates document', () => {
@@ -396,32 +425,32 @@ describe('Stickers collection', () => {
                 assert.strictEqual(stickers[0].id, sticker.id);
                 assert.strictEqual(stickers[0].name, 'test');
             });
+        });
 
-            it('duplicate documents', async () => {
-                // Creating duplicate stickers with varied parameters
-                const sticker1: Stickers.Sticker = {
-                    id: '111111111111111',
-                    name: 'number1',
-                    ext: 'apng'
-                };
-                const sticker2: Stickers.Sticker = {
-                    id: sticker1.id,
-                    name: 'number2',
-                    ext: 'gif'
-                };
-                const sticker3: Stickers.PartialSticker = {
-                    id: sticker1.id
-                };
+        it('merges duplicate documents', async () => {
+            // Creating duplicate stickers with varied parameters
+            const sticker1: Stickers.Sticker = {
+                id: '111111111111111',
+                name: 'number1',
+                ext: 'apng'
+            };
+            const sticker2: Stickers.Sticker = {
+                id: sticker1.id,
+                name: 'number2',
+                ext: 'gif'
+            };
+            const sticker3: Stickers.PartialSticker = {
+                id: sticker1.id
+            };
 
-                await Stickers.update([sticker1, sticker2, sticker3]);
+            await Stickers.update([sticker1, sticker2, sticker3]);
 
-                const stickers = await Stickers.get([sticker3.id]);
+            const stickers = await Stickers.get([sticker3.id]);
 
-                assert.strictEqual(stickers.length, 1);
-                assert.strictEqual(stickers[0].id, sticker3.id);
-                assert.strictEqual(stickers[0].name, 'number2');
-                assert.strictEqual(stickers[0].ext, 'gif');
-            });
+            assert.strictEqual(stickers.length, 1);
+            assert.strictEqual(stickers[0].id, sticker3.id);
+            assert.strictEqual(stickers[0].name, 'number2');
+            assert.strictEqual(stickers[0].ext, 'gif');
         });
     });
 });

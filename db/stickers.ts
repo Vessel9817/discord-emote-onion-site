@@ -17,12 +17,13 @@ export const StickerSchema = new Schema({
 
 export const StickerModel = mongoose.model('stickers', StickerSchema);
 
-export async function get(ids: string[]) {
-    if (ids.length < 1) {
+export async function get(ids: string[] | Set<string>) {
+    if ((ids instanceof Set && ids.size < 1)
+            || (Array.isArray(ids) && ids.length < 1)) {
         return [];
     }
 
-    return await StickerModel.find({ id: { $in: ids } });
+    return await StickerModel.find({ id: { $in: [...ids] } });
 }
 
 /**
@@ -70,7 +71,6 @@ export function merge(
             ? newSticker.ext
             : oldSticker.ext
     };
-
 }
 
 /**
@@ -79,13 +79,32 @@ export function merge(
 export async function update(
     partialStickers: PartialSticker[]
 ): Promise<mongoose.mongo.BulkWriteResult> {
-    const ids = partialStickers.map((p) => p.id);
+    // Prioritizing properties
+    const ids = new Set(partialStickers.map((p) => p.id));
     const oldStickers = new Map<string, Sticker>(
         (await get(ids)).map((s) => [s.id, s as Sticker])
     );
-    const stickers = partialStickers.map((newSticker) =>
+    let stickers = partialStickers.map((newSticker) =>
         merge(oldStickers.get(newSticker.id), newSticker)
     );
+
+    // Deduplicating IDs
+    if (ids.size < stickers.length) {
+        const dedupeMap = new Map<string, Sticker>();
+
+        for (const sticker of stickers) {
+            if (dedupeMap.has(sticker.id)) {
+                dedupeMap.set(sticker.id, merge(dedupeMap.get(sticker.id), sticker))
+            }
+            else {
+                dedupeMap.set(sticker.id, sticker);
+            }
+        }
+
+        stickers = [...dedupeMap.values()];
+    }
+
+    // Writing to DB
     const writes: Parameters<typeof StickerModel.bulkWrite>[0] = [];
 
     for (const sticker of stickers) {
