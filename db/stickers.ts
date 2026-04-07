@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import assert from 'node:assert';
 
 export interface Sticker {
     readonly id: string;
@@ -6,7 +7,7 @@ export interface Sticker {
     ext: 'png' | 'json' | 'apng' | 'gif';
 }
 
-export type PartialSticker = Partial<Sticker> & { readonly id: string };
+export type PartialSticker = { [P in keyof Sticker]?: Sticker[P] | null | undefined; } & { readonly id: string };
 
 export const StickerSchema = new Schema({
     id: String,
@@ -24,31 +25,61 @@ export async function get(ids: string[]) {
     return await StickerModel.find({ id: { $in: ids } });
 }
 
-export async function update(partialStickers: PartialSticker[]) {
-    const extPrecedence: Record<Sticker['ext'], number> = {
-        png: 0,
-        json: 1,
-        apng: 2,
-        gif: 3
+/**
+ * Sets the default values of a sticker
+ */
+export function setDefault(sticker: PartialSticker): Sticker {
+    return {
+        id: sticker.id,
+        name: sticker?.name ?? '',
+        ext: sticker?.ext ?? 'png'
     };
+}
+
+const extPrecedence: Record<Sticker['ext'], number> = {
+    png: 0,
+    json: 1,
+    apng: 2,
+    gif: 3
+};
+
+/**
+ * Creates a new sticker, prioritizing certain given properties
+ */
+export function merge(
+    sticker1: PartialSticker | null | undefined,
+    sticker2: PartialSticker
+): Sticker {
+    const newSticker = setDefault(sticker2);
+
+    if (sticker1 == null) {
+        return newSticker;
+    }
+
+    assert.strictEqual(sticker1.id, sticker2.id, "Can't merge stickers: IDs don't match");
+
+    const oldSticker = setDefault(sticker1);
+
+    return {
+        id: oldSticker.id,
+        name: newSticker.name.length > 0
+            ? newSticker.name
+            : oldSticker.name,
+        ext: extPrecedence[newSticker.ext] >= extPrecedence[oldSticker.ext]
+            ? newSticker.ext
+            : oldSticker.ext
+    };
+
+}
+
+export async function update(partialStickers: PartialSticker[]) {
     const ids = partialStickers.map((p) => p.id);
-    const oldStickers = new Map((await get(ids)).map((e) => [e.id, e]));
-    const stickers: Sticker[] = partialStickers.map((newSticker) => {
-        const oldSticker = oldStickers.get(newSticker.id);
-        const newName = newSticker.name ?? '';
-        const newExt = newSticker.ext ?? 'png';
-        let prioritizedExt = (oldSticker?.ext ?? 'png') as Sticker['ext'];
-
-        if (extPrecedence[newExt] > extPrecedence[prioritizedExt]) {
-            prioritizedExt = newExt;
-        }
-
-        return {
-            id: newSticker.id,
-            name: newName.length > 0 ? newName : (oldSticker?.name ?? ''),
-            ext: prioritizedExt
-        };
-    });
+    const oldStickers = new Map<string, Sticker>(
+        (await get(ids)).map((s) => [s.id, s as Sticker])
+    );
+    const stickers = partialStickers.map((newSticker) =>
+        merge(oldStickers.get(newSticker.id), newSticker)
+    );
     const writes: Parameters<typeof StickerModel.bulkWrite>[0] = [];
 
     for (const sticker of stickers) {
