@@ -193,5 +193,31 @@ describe('Emojis collection', () => {
             assert.strictEqual(emojis[0].id, emoji.id);
             assert.strictEqual(emojis[0].name, 'test');
         });
+        
+        it('duplicate documents', async () => {
+            // Creating duplicate stickers with varied parameters
+            const emoji1: Emojis.Emoji = {
+                id: '111111111111111',
+                name: 'number1',
+                animated: false
+            };
+            const emoji2: Emojis.Emoji = {
+                id: emoji1.id,
+                name: 'number2',
+                animated: true
+            };
+            const emoji3: Emojis.PartialEmoji = {
+                id: emoji1.id
+            };
+
+            await Emojis.update([emoji1, emoji2, emoji3]);
+
+            const emojis = await Emojis.get([emoji3.id]);
+
+            assert.strictEqual(emojis.length, 1);
+            assert.strictEqual(emojis[0].id, emoji3.id);
+            assert.strictEqual(emojis[0].name, 'number2');
+            assert.strictEqual(emojis[0].animated, true);
+        });
     });
 });

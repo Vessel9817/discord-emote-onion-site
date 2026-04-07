@@ -245,5 +245,31 @@ describe('Stickers collection', () => {
             assert.strictEqual(stickers[0].id, sticker.id);
             assert.strictEqual(stickers[0].name, 'test');
         });
+
+        it('duplicate documents', async () => {
+            // Creating duplicate stickers with varied parameters
+            const sticker1: Stickers.Sticker = {
+                id: '111111111111111',
+                name: 'number1',
+                ext: 'apng'
+            };
+            const sticker2: Stickers.Sticker = {
+                id: sticker1.id,
+                name: 'number2',
+                ext: 'gif'
+            };
+            const sticker3: Stickers.PartialSticker = {
+                id: sticker1.id
+            };
+
+            await Stickers.update([sticker1, sticker2, sticker3]);
+
+            const stickers = await Stickers.get([sticker3.id]);
+
+            assert.strictEqual(stickers.length, 1);
+            assert.strictEqual(stickers[0].id, sticker3.id);
+            assert.strictEqual(stickers[0].name, 'number2');
+            assert.strictEqual(stickers[0].ext, 'gif');
+        });
     });
 });
