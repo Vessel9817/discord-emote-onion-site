@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import assert from 'node:assert';
+import { DISCORD_EPOCH, MAX_LONG } from './index.ts';
 
 export interface Emoji {
     id: string;
@@ -10,12 +11,43 @@ export interface Emoji {
 export type PartialEmoji = { [P in keyof Emoji]?: Emoji[P] | null | undefined; } & { readonly id: string };
 
 export const EmojiSchema = new Schema({
-    id: String,
+    id: { type: String, index: true },
     name: String,
     animated: Boolean
 });
 
-export const EmojiModel = mongoose.model('emojis', EmojiSchema);
+export const Model = mongoose.model('emojis', EmojiSchema);
+
+export function validate(
+    partialEmoji: unknown
+): asserts partialEmoji is PartialEmoji {
+    assert(partialEmoji != null);
+    assert(typeof partialEmoji === 'object');
+    assert('id' in partialEmoji);
+    assert(typeof partialEmoji.id === 'string');
+
+    const id = BigInt(partialEmoji.id);
+
+    assert(id >= DISCORD_EPOCH);
+    assert(id < MAX_LONG);
+
+    if ('name' in partialEmoji && partialEmoji.name != null) {
+        assert(typeof partialEmoji.name === 'string');
+        assert(partialEmoji.name.length !== 1); // Can be empty, or at least 2
+        assert(partialEmoji.name.length <= 32);
+    }
+    if ('animated' in partialEmoji && partialEmoji.animated != null) {
+        assert(typeof partialEmoji.animated === 'boolean');
+    }
+}
+
+function validateAll(
+    partialEmojis: unknown[]
+): asserts partialEmojis is PartialEmoji[] {
+    for (const partialEmoji of partialEmojis) {
+        validate(partialEmoji);
+    }
+}
 
 export async function get(ids: string[] | Set<string>) {
     if ((ids instanceof Set && ids.size < 1)
@@ -23,7 +55,18 @@ export async function get(ids: string[] | Set<string>) {
         return [];
     }
 
-    return await EmojiModel.find({ id: { $in: [...ids] } });
+    const newIds = [...ids].filter((id) => {
+        try {
+            validate({ id });
+        }
+        catch {
+            return false;
+        }
+
+        return true;
+    });
+
+    return await Model.find({ id: { $in: newIds } });
 }
 
 /**
@@ -68,9 +111,11 @@ export function merge(
  * Upserts emojis to the DB
  */
 export async function update(
-    partialEmojis: PartialEmoji[]
+    partialEmojis: PartialEmoji[] | unknown[]
 ): Promise<mongoose.mongo.BulkWriteResult> {
     // Prioritizing properties
+    validateAll(partialEmojis);
+
     const ids = new Set(partialEmojis.map((p) => p.id));
     const oldEmojis = new Map<string, Emoji>(
         (await get(ids)).map((e) => [e.id, e as Emoji])
@@ -96,7 +141,7 @@ export async function update(
     }
 
     // Writing to DB
-    const writes: Parameters<typeof EmojiModel.bulkWrite>[0] = [];
+    const writes: Parameters<typeof Model.bulkWrite>[0] = [];
 
     for (const emoji of emojis) {
         writes.push({
@@ -108,5 +153,5 @@ export async function update(
         });
     }
     
-    return await EmojiModel.bulkWrite(writes);
+    return await Model.bulkWrite(writes);
 }

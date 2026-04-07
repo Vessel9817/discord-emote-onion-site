@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import assert from 'node:assert';
+import { DISCORD_EPOCH, MAX_LONG } from './index.ts';
 
 export interface Sticker {
     readonly id: string;
@@ -10,12 +11,50 @@ export interface Sticker {
 export type PartialSticker = { [P in keyof Sticker]?: Sticker[P] | null | undefined; } & { readonly id: string };
 
 export const StickerSchema = new Schema({
-    id: String,
+    id: { type: String, index: true },
     name: String,
     ext: String
 });
 
-export const StickerModel = mongoose.model('stickers', StickerSchema);
+const extPrecedence: Record<Sticker['ext'], number> = {
+    png: 0,
+    json: 1,
+    apng: 2,
+    gif: 3
+};
+
+export const Model = mongoose.model('stickers', StickerSchema);
+
+export function validate(
+    partialSticker: unknown
+): asserts partialSticker is PartialSticker {
+    assert(partialSticker != null);
+    assert(typeof partialSticker === 'object');
+    assert('id' in partialSticker);
+    assert(typeof partialSticker.id === 'string');
+
+    const id = BigInt(partialSticker.id);
+
+    assert(id >= DISCORD_EPOCH);
+    assert(id < MAX_LONG);
+
+    if ('name' in partialSticker && partialSticker.name != null) {
+        assert(typeof partialSticker.name === 'string');
+        assert(partialSticker.name.length <= 30);
+    }
+    if ('ext' in partialSticker && partialSticker.ext != null) {
+        assert(typeof partialSticker.ext === 'string');
+        assert(partialSticker.ext in extPrecedence);
+    }
+}
+
+function validateAll(
+    partialStickers: unknown[]
+): asserts partialStickers is PartialSticker[] {
+    for (const partialEmoji of partialStickers) {
+        validate(partialEmoji);
+    }
+}
 
 export async function get(ids: string[] | Set<string>) {
     if ((ids instanceof Set && ids.size < 1)
@@ -23,7 +62,18 @@ export async function get(ids: string[] | Set<string>) {
         return [];
     }
 
-    return await StickerModel.find({ id: { $in: [...ids] } });
+    const newIds = [...ids].filter((id) => {
+            try {
+                validate({ id });
+            }
+            catch {
+                return false;
+            }
+    
+            return true;
+        });
+
+    return await Model.find({ id: { $in: newIds } });
 }
 
 /**
@@ -36,13 +86,6 @@ export function setDefault(sticker: PartialSticker): Sticker {
         ext: sticker?.ext ?? 'png'
     };
 }
-
-const extPrecedence: Record<Sticker['ext'], number> = {
-    png: 0,
-    json: 1,
-    apng: 2,
-    gif: 3
-};
 
 /**
  * Creates a new sticker, prioritizing certain given properties
@@ -80,6 +123,8 @@ export async function update(
     partialStickers: PartialSticker[]
 ): Promise<mongoose.mongo.BulkWriteResult> {
     // Prioritizing properties
+    validateAll(partialStickers);
+
     const ids = new Set(partialStickers.map((p) => p.id));
     const oldStickers = new Map<string, Sticker>(
         (await get(ids)).map((s) => [s.id, s as Sticker])
@@ -105,7 +150,7 @@ export async function update(
     }
 
     // Writing to DB
-    const writes: Parameters<typeof StickerModel.bulkWrite>[0] = [];
+    const writes: Parameters<typeof Model.bulkWrite>[0] = [];
 
     for (const sticker of stickers) {
         writes.push({
@@ -117,5 +162,5 @@ export async function update(
         });
     }
     
-    return await StickerModel.bulkWrite(writes);
+    return await Model.bulkWrite(writes);
 }

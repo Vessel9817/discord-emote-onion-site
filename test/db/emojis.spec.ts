@@ -148,7 +148,7 @@ describe('Emojis collection', () => {
                     animated: true
                 };
 
-                await Emojis.EmojiModel.insertMany([emoji1, emoji2]);
+                await Emojis.Model.insertMany([emoji1, emoji2]);
 
                 // Retrieving emojis
                 const emojis = await Emojis.get([emoji1.id, emoji2.id]);
@@ -175,7 +175,7 @@ describe('Emojis collection', () => {
                     animated: true
                 };
 
-                await Emojis.EmojiModel.insertMany([emoji1, emoji2]);
+                await Emojis.Model.insertMany([emoji1, emoji2]);
 
                 // Retrieving emojis
                 const emojis = await Emojis.get(new Set([emoji1.id, emoji2.id]));

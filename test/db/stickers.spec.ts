@@ -180,7 +180,7 @@ describe('Stickers collection', () => {
                     ext: 'gif'
                 };
 
-                await Stickers.StickerModel.insertMany([sticker1, sticker2]);
+                await Stickers.Model.insertMany([sticker1, sticker2]);
 
                 // Retrieving stickers
                 const stickers = await Stickers.get([sticker1.id, sticker2.id]);
@@ -207,7 +207,7 @@ describe('Stickers collection', () => {
                     ext: 'gif'
                 };
 
-                await Stickers.StickerModel.insertMany([sticker1, sticker2]);
+                await Stickers.Model.insertMany([sticker1, sticker2]);
 
                 // Retrieving stickers
                 const stickers = await Stickers.get(new Set([sticker1.id, sticker2.id]));
