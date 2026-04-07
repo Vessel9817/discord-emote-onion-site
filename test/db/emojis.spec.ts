@@ -71,6 +71,17 @@ describe('Emojis collection', () => {
             assert.strictEqual(newEmoji.animated, false);
         });
 
+        it('throws on mismatched IDs', () => {
+            const emoji1: Emojis.PartialEmoji = {
+                id: '111111111111111'
+            }
+            const emoji2: Emojis.PartialEmoji = {
+                id: '222222222222222'
+            };
+
+            assert.throws(() => Emojis.merge(emoji1, emoji2));
+        });
+
         describe('prioritizes', () => {
             it('animation', () => {
                 const emoji1: Emojis.PartialEmoji = {

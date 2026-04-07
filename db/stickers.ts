@@ -56,7 +56,8 @@ export function merge(
         return newSticker;
     }
 
-    assert.strictEqual(sticker1.id, sticker2.id, "Can't merge stickers: IDs don't match");
+    assert.strictEqual(sticker1.id, sticker2.id,
+            "Can't merge stickers: mismatched IDs");
 
     const oldSticker = setDefault(sticker1);
 
@@ -72,7 +73,12 @@ export function merge(
 
 }
 
-export async function update(partialStickers: PartialSticker[]) {
+/**
+ * Upserts stickers to the DB
+ */
+export async function update(
+    partialStickers: PartialSticker[]
+): Promise<mongoose.mongo.BulkWriteResult> {
     const ids = partialStickers.map((p) => p.id);
     const oldStickers = new Map<string, Sticker>(
         (await get(ids)).map((s) => [s.id, s as Sticker])

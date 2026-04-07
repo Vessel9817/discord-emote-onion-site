@@ -71,6 +71,17 @@ describe('Stickers collection', () => {
             assert.strictEqual(newEmoji.ext, 'png');
         });
 
+        it('throws on mismatched IDs', () => {
+            const sticker1: Stickers.PartialSticker = {
+                id: '111111111111111'
+            }
+            const sticker2: Stickers.PartialSticker = {
+                id: '222222222222222'
+            };
+
+            assert.throws(() => Stickers.merge(sticker1, sticker2));
+        });
+
         describe('prioritizes', () => {
             it('json over png', () => {
                 const sticker1: Stickers.PartialSticker = {

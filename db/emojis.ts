@@ -50,7 +50,7 @@ export function merge(
     }
 
     assert.strictEqual(emoji1.id, emoji2.id,
-            "Can't merge stickers: IDs don't match");
+            "Can't merge stickers: mismatched IDs");
 
     const oldEmoji = setDefault(emoji1);
 
@@ -64,7 +64,12 @@ export function merge(
 
 }
 
-export async function update(partialEmojis: PartialEmoji[]) {
+/**
+ * Upserts emojis to the DB
+ */
+export async function update(
+    partialEmojis: PartialEmoji[]
+): Promise<mongoose.mongo.BulkWriteResult> {
     const ids = partialEmojis.map((p) => p.id);
     const oldEmojis = new Map<string, Emoji>(
         (await get(ids)).map((e) => [e.id, e as Emoji])
