@@ -1,4 +1,4 @@
-import { ErrorRequestHandler, RequestHandler } from 'express';
+import { type ErrorRequestHandler, type RequestHandler } from 'express';
 import { http } from '../utils/constants.ts';
 
 /**
