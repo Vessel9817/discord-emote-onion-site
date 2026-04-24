@@ -19,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: ./onion-website/src/express/Dockerfile
+      args:
+        - EXPRESS_APP_PATH=.
   express-debug:
     extends:
       service: express-debug
