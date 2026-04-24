@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { DISCORD_EPOCH, MAX_LONG } from './index.ts';
 
 export interface Emoji {
-    id: string;
+    readonly id: string;
     name: string;
     animated: boolean;
 }
