@@ -38,11 +38,11 @@ export function validate(
     assert(id >= DISCORD_EPOCH);
     assert(id < MAX_LONG);
 
-    if ('name' in partialSticker && partialSticker.name != null) {
+    if ('name' in partialSticker) {
         assert(typeof partialSticker.name === 'string');
         assert(partialSticker.name.length <= 30);
     }
-    if ('ext' in partialSticker && partialSticker.ext != null) {
+    if ('ext' in partialSticker) {
         assert(typeof partialSticker.ext === 'string');
         assert(partialSticker.ext in extPrecedence);
     }

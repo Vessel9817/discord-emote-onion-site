@@ -31,12 +31,12 @@ export function validate(
     assert(id >= DISCORD_EPOCH);
     assert(id < MAX_LONG);
 
-    if ('name' in partialEmoji && partialEmoji.name != null) {
+    if ('name' in partialEmoji) {
         assert(typeof partialEmoji.name === 'string');
         assert(partialEmoji.name.length !== 1); // Can be empty, or at least 2
         assert(partialEmoji.name.length <= 32);
     }
-    if ('animated' in partialEmoji && partialEmoji.animated != null) {
+    if ('animated' in partialEmoji) {
         assert(typeof partialEmoji.animated === 'boolean');
     }
 }
