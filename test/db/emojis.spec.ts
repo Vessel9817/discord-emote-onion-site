@@ -2,7 +2,7 @@ import { beforeEach, describe, it } from 'mocha';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import assert from 'node:assert';
-import { Emojis } from '../../db/index.ts';
+import { DISCORD_EPOCH, Emojis, MAX_LONG } from '../../db/index.ts';
 
 describe('Emojis collection', () => {
     let mongod: MongoMemoryServer;
@@ -15,6 +15,155 @@ describe('Emojis collection', () => {
     afterEach(async () => {
         await mongoose.disconnect();
         await mongod.stop();
+    });
+
+    describe('validate', () => {
+        it('rejects undefined', () => {
+            assert.throws(() => Emojis.validate(undefined));
+        });
+
+        it('rejects null', () => {
+            assert.throws(() => Emojis.validate(null));
+        });
+
+        it('rejects non-object', () => {
+            assert.throws(() => Emojis.validate(5));
+        });
+
+        it('rejects missing id', () => {
+            assert.throws(() => Emojis.validate({}));
+        });
+
+        it('rejects non-string id', () => {
+            assert.throws(() => Emojis.validate({ id: 5 }));
+        });
+
+        it('rejects impossibly old id', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: (DISCORD_EPOCH - 1n).toString()
+            };
+
+            assert.throws(() => Emojis.validate(emoji))
+        });
+
+        it('rejects invalid id', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: (MAX_LONG + 1n).toString()
+            };
+            assert.throws(() => Emojis.validate(emoji))
+        });
+
+        it('accepts min id', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: DISCORD_EPOCH.toString()
+            };
+
+            Emojis.validate(emoji);
+        });
+
+        it('accepts max id', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: (MAX_LONG - 1n).toString()
+            };
+
+            Emojis.validate(emoji);
+        });
+
+        it('rejects non-string name', () => {
+            assert.throws(() => Emojis.validate({
+                id: '111111111111111',
+                name: null
+            }));
+        });
+
+        it('accepts empty name', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                name: ''
+            };
+
+            Emojis.validate(emoji);
+        });
+
+        it('rejects 1 character name', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                name: 'a'
+            };
+
+            assert.throws(() => Emojis.validate(emoji));
+        });
+
+        it('accepts 2+ character name', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                name: 'ab'
+            };
+
+            Emojis.validate(emoji);
+        });
+
+        it('accepts 32- character name', () => {
+            const name = 'abcdefghabcdefghabcdefghabcdefgh';
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                name: name
+            };
+
+            assert.strictEqual(name.length, 32);
+            Emojis.validate(emoji);
+        });
+
+        it('rejects 33+ character name', () => {
+            const name = 'abcdefghabcdefghabcdefghabcdefgha';
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                name: name
+            };
+
+            assert(name.length > 32);
+            assert.throws(() => Emojis.validate(emoji));
+        });
+
+        it('rejects non-boolean animated property', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                animated: null
+            };
+
+            assert.throws(() => Emojis.validate(emoji));
+        });
+
+        it('accepts boolean animated property', () => {
+            const emoji: Emojis.PartialEmoji = {
+                id: '111111111111111',
+                animated: false
+            };
+
+            Emojis.validate(emoji);
+        });
+    });
+
+    describe('validateAll', () => {
+        it('accepts valid emojis', () => {
+            const emojis: Emojis.PartialEmoji[] = [
+                { id: DISCORD_EPOCH.toString() },
+                { id: '111111111111111' },
+                { id: MAX_LONG.toString() }
+            ];
+
+            Emojis.validateAll(emojis);
+        });
+
+        it('rejects invalid emoji', () => {
+            const emojis: Emojis.PartialEmoji[] = [
+                { id: DISCORD_EPOCH.toString() },
+                { id: '' },
+                { id: MAX_LONG.toString() }
+            ];
+
+            assert.throws(() => Emojis.validateAll(emojis));
+        });
     });
 
     describe('setDefault', () => {
@@ -192,6 +341,30 @@ describe('Emojis collection', () => {
     });
 
     describe('update', () => {
+        describe('validates', () => {
+            it('valid emojis', async () => {
+                const emojis: Emojis.PartialEmoji[] = [
+                    { id: DISCORD_EPOCH.toString() },
+                    { id: '111111111111111' },
+                    { id: MAX_LONG.toString() }
+                ];
+
+                await Emojis.Model.insertMany(emojis);
+                await assert.doesNotReject(Emojis.update(emojis));
+            });
+
+            it('invalid emojis', async () => {
+                const emojis: Emojis.PartialEmoji[] = [
+                    { id: DISCORD_EPOCH.toString() },
+                    { id: '' },
+                    { id: MAX_LONG.toString() }
+                ];
+
+                await Emojis.Model.insertMany(emojis);
+                await assert.rejects(Emojis.update(emojis));
+            });
+        });
+        
         describe('creates document', () => {
             it('with default fields', async () => {
                 const id = '123456789012345';

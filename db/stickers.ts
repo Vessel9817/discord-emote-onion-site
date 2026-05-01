@@ -36,7 +36,7 @@ export function validate(
     const id = BigInt(partialSticker.id);
 
     assert(id >= DISCORD_EPOCH);
-    assert(id < MAX_LONG);
+    assert(id <= MAX_LONG);
 
     if ('name' in partialSticker) {
         assert(typeof partialSticker.name === 'string');
@@ -48,7 +48,7 @@ export function validate(
     }
 }
 
-function validateAll(
+export function validateAll(
     partialStickers: unknown[]
 ): asserts partialStickers is PartialSticker[] {
     for (const partialEmoji of partialStickers) {
@@ -63,15 +63,15 @@ export async function get(ids: string[] | Set<string>) {
     }
 
     const newIds = [...ids].filter((id) => {
-            try {
-                validate({ id });
-            }
-            catch {
-                return false;
-            }
-    
-            return true;
-        });
+        try {
+            validate({ id });
+        }
+        catch {
+            return false;
+        }
+
+        return true;
+    });
 
     return await Model.find({ id: { $in: newIds } });
 }

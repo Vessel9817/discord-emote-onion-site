@@ -29,7 +29,7 @@ export function validate(
     const id = BigInt(partialEmoji.id);
 
     assert(id >= DISCORD_EPOCH);
-    assert(id < MAX_LONG);
+    assert(id <= MAX_LONG);
 
     if ('name' in partialEmoji) {
         assert(typeof partialEmoji.name === 'string');
@@ -41,7 +41,7 @@ export function validate(
     }
 }
 
-function validateAll(
+export function validateAll(
     partialEmojis: unknown[]
 ): asserts partialEmojis is PartialEmoji[] {
     for (const partialEmoji of partialEmojis) {

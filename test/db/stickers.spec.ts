@@ -2,7 +2,7 @@ import { beforeEach, describe, it } from 'mocha';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import assert from 'node:assert';
-import { Stickers } from '../../db/index.ts';
+import { DISCORD_EPOCH, MAX_LONG, Stickers } from '../../db/index.ts';
 
 describe('Stickers collection', () => {
     let mongod: MongoMemoryServer;
@@ -16,7 +16,138 @@ describe('Stickers collection', () => {
         await mongoose.disconnect();
         await mongod.stop();
     });
-    
+
+    describe('validate', () => {
+        it('rejects undefined', () => {
+            assert.throws(() => Stickers.validate(undefined));
+        });
+
+        it('rejects null', () => {
+            assert.throws(() => Stickers.validate(null));
+        });
+
+        it('rejects non-object', () => {
+            assert.throws(() => Stickers.validate(5));
+        });
+
+        it('rejects missing id', () => {
+            assert.throws(() => Stickers.validate({}));
+        });
+
+        it('rejects non-string id', () => {
+            assert.throws(() => Stickers.validate({ id: 5 }));
+        });
+
+        it('rejects impossibly old id', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: (DISCORD_EPOCH - 1n).toString()
+            };
+
+            assert.throws(() => Stickers.validate(sticker))
+        });
+
+        it('rejects invalid id', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: (MAX_LONG + 1n).toString()
+            };
+            assert.throws(() => Stickers.validate(sticker))
+        });
+
+        it('accepts min id', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: DISCORD_EPOCH.toString()
+            };
+
+            Stickers.validate(sticker);
+        });
+
+        it('accepts max id', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: (MAX_LONG - 1n).toString()
+            };
+
+            Stickers.validate(sticker);
+        });
+
+        it('rejects non-string name', () => {
+            assert.throws(() => Stickers.validate({
+                id: '111111111111111',
+                name: null
+            }));
+        });
+
+        it('accepts empty name', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: '111111111111111',
+                name: ''
+            };
+
+            Stickers.validate(sticker);
+        });
+
+        it('accepts 30- character name', () => {
+            const name = 'abcdefabcdefabcdefabcdefabcdef';
+            const sticker: Stickers.PartialSticker = {
+                id: '111111111111111',
+                name: name
+            };
+
+            assert.strictEqual(name.length, 30);
+            Stickers.validate(sticker);
+        });
+
+        it('rejects 31+ character name', () => {
+            const name = 'abcdefabcdefabcdefabcdefabcdefa';
+            const sticker: Stickers.PartialSticker = {
+                id: '111111111111111',
+                name: name
+            };
+
+            assert(name.length > 30);
+            assert.throws(() => Stickers.validate(sticker));
+        });
+
+        it('rejects non-string ext property', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: '111111111111111',
+                ext: null
+            };
+
+            assert.throws(() => Stickers.validate(sticker));
+        });
+
+        it('accepts valid ext property', () => {
+            const sticker: Stickers.PartialSticker = {
+                id: '111111111111111',
+                ext: 'png'
+            };
+
+            Stickers.validate(sticker);
+        });
+    });
+
+    describe('validateAll', () => {
+        it('accepts valid stickers', () => {
+            const stickers: Stickers.PartialSticker[] = [
+                { id: DISCORD_EPOCH.toString() },
+                { id: '111111111111111' },
+                { id: MAX_LONG.toString() }
+            ];
+
+            Stickers.validateAll(stickers);
+        });
+
+        it('rejects invalid sticker', () => {
+            const stickers: Stickers.PartialSticker[] = [
+                { id: DISCORD_EPOCH.toString() },
+                { id: '' },
+                { id: MAX_LONG.toString() }
+            ];
+
+            assert.throws(() => Stickers.validateAll(stickers));
+        });
+    });
+
     describe('setDefault', () => {
         describe('sets default fields', () => {
             it('with no fields set', () => {
@@ -224,6 +355,30 @@ describe('Stickers collection', () => {
     });
 
     describe('update', () => {
+        describe('validates', () => {
+            it('valid stickers', async () => {
+                const stickers: Stickers.PartialSticker[] = [
+                    { id: DISCORD_EPOCH.toString() },
+                    { id: '111111111111111' },
+                    { id: MAX_LONG.toString() }
+                ];
+
+                await Stickers.Model.insertMany(stickers);
+                await assert.doesNotReject(Stickers.update(stickers));
+            });
+
+            it('invalid stickers', async () => {
+                const stickers: Stickers.PartialSticker[] = [
+                    { id: DISCORD_EPOCH.toString() },
+                    { id: '' },
+                    { id: MAX_LONG.toString() }
+                ];
+
+                await Stickers.Model.insertMany(stickers);
+                await assert.rejects(Stickers.update(stickers));
+            });
+        });
+
         describe('creates document', () => {
             it('with default fields', async () => {
                 const id = '123456789012345';
