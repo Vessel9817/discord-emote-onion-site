@@ -19,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: ./onion-website/src/express/Dockerfile
+      args:
+        - WEBPACK_CONFIG=./onion-website/src/express/webpack/webpack.config.ts
   express-debug:
     extends:
       service: express-debug

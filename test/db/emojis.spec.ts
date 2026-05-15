@@ -2,7 +2,7 @@ import { beforeEach, describe, it } from 'mocha';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import assert from 'node:assert';
-import { DISCORD_EPOCH, Emojis, MAX_LONG } from '../../db/index.ts';
+import { DISCORD_EPOCH, Emojis, MAX_LONG } from '../../db/index';
 
 describe('Emojis collection', () => {
     let mongod: MongoMemoryServer;

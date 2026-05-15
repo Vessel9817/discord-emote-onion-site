@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import assert from 'node:assert';
-import { DISCORD_EPOCH, MAX_LONG } from './index.ts';
+import { DISCORD_EPOCH, MAX_LONG } from './index';
 
 export interface Sticker {
     readonly id: string;

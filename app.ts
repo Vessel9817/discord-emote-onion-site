@@ -1,8 +1,8 @@
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
-import { emotes } from './env.ts';
-import { APP_ROUTER, NOT_FOUND_ROUTER } from './routes/index.ts';
+import { emotes } from './env';
+import { APP_ROUTER, NOT_FOUND_ROUTER } from './routes/index';
 
 const APP = express();
 const PORT = 3000;

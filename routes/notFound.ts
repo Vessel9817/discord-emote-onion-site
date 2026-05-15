@@ -1,5 +1,5 @@
 import express from 'express';
-import { errorHandler, errorPage } from '../middleware/index.ts';
+import { errorHandler, errorPage } from '../middleware/index';
 
 const router = express.Router();
 

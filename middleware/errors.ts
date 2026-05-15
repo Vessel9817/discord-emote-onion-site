@@ -1,5 +1,5 @@
 import { type ErrorRequestHandler, type RequestHandler } from 'express';
-import { http } from '../utils/constants.ts';
+import { http } from '../utils/constants';
 
 /**
  * Displays an internal error page
