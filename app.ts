@@ -10,6 +10,9 @@ const PORT = 3000;
 
 APP.set('view engine', 'ejs');
 
+// Removing fingerprintable headers
+APP.disable('x-powered-by');
+
 // Setting global app middleware
 APP.use(blockTrace); // Blocks TRACE requests
 APP.use(cors()); // Sets CORS policy
