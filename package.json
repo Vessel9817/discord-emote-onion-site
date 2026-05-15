@@ -15,8 +15,11 @@
         "url": "https://github.com/Vessel9817/discord-emote-onion-site/issues"
     },
     "scripts": {
-        "test": "mocha --exit --fail-zero --require ts-node/register test/**/*.spec.ts",
-        "start": "node --env-file=./secrets/.env -r ts-node/register ./app.ts",
+        "test": "mocha --exit --fail-zero test/**/*.spec.ts",
+        "start": "node --env-file=./secrets/.env ./dist/index.cjs",
+        "build": "node --run=build:prod",
+        "build:prod": "cross-env NODE_ENV=\"production\" NODE_OPTIONS=\"--no-strip-types --import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
+        "build:dev": "cross-env NODE_ENV=\"development\" NODE_OPTIONS=\"--no-strip-types --import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
         "tsc": "tsc --noEmit"
     },
     "dependencies": {
@@ -33,11 +36,11 @@
         "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^25.6.0",
         "clean-webpack-plugin": "^4.0.0",
+        "cross-env": "^10.1.0",
         "mocha": "^11.7.5",
         "mongodb-memory-server": "^11.0.1",
         "terser-webpack-plugin": "^5.6.0",
         "ts-loader": "^9.5.7",
-        "ts-node": "^10.9.2",
         "tslib": "^2.8.1",
         "tsx": "^4.22.0",
         "typescript": "^6.0.3",

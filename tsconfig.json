@@ -22,7 +22,6 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "module": "ES2022",
-        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "noEmit": false,
         "importHelpers": true,
@@ -40,6 +39,6 @@
         "**/temp/",
         "**/tmp/",
         "**/dist/",
-        "onion-website"
+        "onion-website/"
     ]
 }
