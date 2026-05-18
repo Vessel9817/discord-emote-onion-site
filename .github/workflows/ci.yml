@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install node modules
-        run: npm i
+        run: npm ci
       - name: Run tsc
         run: npm run tsc
   test:
@@ -53,6 +53,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install node modules
-        run: npm i
+        run: npm ci
       - name: Run tests
         run: npm test
