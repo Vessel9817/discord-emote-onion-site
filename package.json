@@ -18,8 +18,8 @@
         "test": "mocha --exit --fail-zero test/**/*.spec.ts",
         "start": "node --env-file=./secrets/.env ./dist/index.cjs",
         "build": "node --run=build:prod",
-        "build:prod": "cross-env NODE_ENV=\"production\" NODE_OPTIONS=\"--no-strip-types --import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
-        "build:dev": "cross-env NODE_ENV=\"development\" NODE_OPTIONS=\"--no-strip-types --import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
+        "build:prod": "cross-env NODE_ENV=\"production\" NODE_OPTIONS=\"--import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
+        "build:dev": "cross-env NODE_ENV=\"development\" NODE_OPTIONS=\"--import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
         "tsc": "tsc --noEmit"
     },
     "dependencies": {
