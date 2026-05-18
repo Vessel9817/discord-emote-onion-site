@@ -33,7 +33,7 @@
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/mocha": "^10.0.10",
-        "@types/mongodb-memory-server": "^1.8.0",
+        "@types/mongodb-memory-server": "^2.3.0",
         "@types/node": "^25.9.1",
         "clean-webpack-plugin": "^4.0.0",
         "cross-env": "^10.1.0",
