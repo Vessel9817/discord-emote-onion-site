@@ -35,7 +35,6 @@
         "@types/mocha": "^10.0.10",
         "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^26.1.2",
-        "clean-webpack-plugin": "^4.0.0",
         "cross-env": "^10.1.0",
         "mocha": "^11.8.0",
         "mongodb-memory-server": "^11.2.0",
