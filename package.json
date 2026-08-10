@@ -18,8 +18,8 @@
         "test": "mocha --exit --fail-zero test/**/*.spec.ts",
         "start": "node --env-file=./secrets/.env ./dist/index.cjs",
         "build": "node --run=build:prod",
-        "build:prod": "cross-env NODE_ENV=\"production\" NODE_OPTIONS=\"--import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
-        "build:dev": "cross-env NODE_ENV=\"development\" NODE_OPTIONS=\"--import tsx\" webpack -c ./onion-website/src/express/webpack/webpack.config.ts",
+        "build:prod": "cross-env NODE_ENV=\"production\" tsx ./onion-website/src/express/webpack/index.ts",
+        "build:dev": "cross-env NODE_ENV=\"development\" tsx ./onion-website/src/express/webpack/index.ts",
         "tsc": "tsc --noEmit"
     },
     "dependencies": {
@@ -35,16 +35,14 @@
         "@types/mocha": "^10.0.10",
         "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^26.1.2",
-        "clean-webpack-plugin": "^4.0.0",
+        "@typescript/native": "npm:typescript@^7.0.2",
         "cross-env": "^10.1.0",
-        "mocha": "^11.8.0",
+        "mocha": "^12.0.0-rc.6",
         "mongodb-memory-server": "^11.2.0",
         "terser-webpack-plugin": "^5.6.1",
         "ts-loader": "^9.6.2",
         "tslib": "^2.8.1",
-        "tsx": "^4.23.5",
-        "typescript": "^6.0.3",
-        "webpack": "^5.109.2",
-        "webpack-cli": "^7.2.2"
+        "tsx": "^4.23.12",
+        "webpack": "^5.109.2"
     }
 }

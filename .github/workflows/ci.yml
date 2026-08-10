@@ -4,28 +4,35 @@ on:
   push:
 
 env:
+  DOCKER_VERSION: v29.6.2
   DOCKER_COMPOSE_VERSION: v5.3.1
 
 jobs:
+  # Builds Docker compose services
   build:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
           submodules: true
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5
+        with:
+          version: ${{ env.DOCKER_VERSION }}
       - name: Set up Docker Compose
         uses: docker/setup-compose-action@v2
         with:
           version: ${{ env.DOCKER_COMPOSE_VERSION }}
       - name: Build Compose stack
         run: docker compose --profile production --profile development build
+  # Runs a TypeScript type check
   tsc:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         node-version: [24.x]
@@ -39,10 +46,28 @@ jobs:
         run: npm ci
       - name: Run tsc
         run: npm run tsc
+  # Checks for dependency conflicts that `npm ci` would miss
+  npm:
+    permissions:
+      contents: read
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04]
+        node-version: [24.x]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Check dependency tree
+        run: npm i --package-lock-only --dry-run
+  # Runs tests
   test:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         node-version: [24.x]

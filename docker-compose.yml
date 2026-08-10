@@ -20,14 +20,26 @@ services:
       context: .
       dockerfile: ./onion-website/src/express/Dockerfile
       args:
-        - WEBPACK_CONFIG=./onion-website/src/express/webpack/webpack.config.ts
+        - BUILDER_ENTRYPOINT=./onion-website/src/express/webpack/index.ts
   express-debug:
     extends:
       service: express-debug
       file: ./onion-website/docker-compose.yml
-  mongo:
+  mongo-init:
     extends:
-      service: mongo
+      service: mongo-init
+      file: ./onion-website/docker-compose.yml
+  mongo-1:
+    extends:
+      service: mongo-1
+      file: ./onion-website/docker-compose.yml
+  mongo-2:
+    extends:
+      service: mongo-2
+      file: ./onion-website/docker-compose.yml
+  mongo-3:
+    extends:
+      service: mongo-3
       file: ./onion-website/docker-compose.yml
   mongo-debug:
     extends:
@@ -52,9 +64,20 @@ secrets:
     file: ./onion-website/src/mongo/secrets/dev/username.txt
   mongo-dev-password:
     file: ./onion-website/src/mongo/secrets/dev/password.txt
+  mongo-keyfile:
+    file: ./onion-website/src/mongo/secrets/keyFile.pem
+configs:
+  mongo-replicas:
+    file: ./onion-website/src/mongo/replicas.json
 volumes:
-  mongo-db:
-  mongo-configdb:
+  mongo-configdb-init:
+  mongo-configdb-1:
+  mongo-configdb-2:
+  mongo-configdb-3:
+  mongo-db-init:
+  mongo-db-1:
+  mongo-db-2:
+  mongo-db-3:
 networks:
   tor:
     ipam:
