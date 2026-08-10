@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
-import { emotes } from './env';
+import { domain, emotes } from './env';
 import { appRouter, notFoundRouter } from './routes/index';
 
 const app = express();
@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 app.disable('x-powered-by');
 
 // Setting global app middleware
-app.use(cors()); // Sets CORS policy
+app.use(cors({ origin: domain })); // Sets CORS policy
 app.use(express.json()); // Parse Content-Type: json
 app.use(express.urlencoded({ extended: false })); // Encodes special characters in URLs
 app.use('/', appRouter); // Serves app
