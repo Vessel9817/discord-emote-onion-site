@@ -64,6 +64,8 @@ secrets:
     file: ./secrets/
   mongo-config:
     file: ./onion-website/src/mongo/secrets/.env
+  mongo-keyfile:
+    file: ./onion-website/src/mongo/secrets/keyFile.pem
   mongo-root-username:
     file: ./onion-website/src/mongo/secrets/root/username.txt
   mongo-root-password:
@@ -76,8 +78,6 @@ secrets:
     file: ./onion-website/src/mongo/secrets/dev/username.txt
   mongo-dev-password:
     file: ./onion-website/src/mongo/secrets/dev/password.txt
-  mongo-keyfile:
-    file: ./onion-website/src/mongo/secrets/keyFile.pem
   grafana-admin-username:
     file: ./onion-website/src/grafana/secrets/username.txt
   grafana-admin-password:
