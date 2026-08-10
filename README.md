@@ -20,12 +20,16 @@ Rename the following files to remove the `.example` postfix:
 - [./onion-website/src/mongo/secrets/root/password.txt.example](./onion-website/src/mongo/secrets/root/password.txt.example)
 - [./onion-website/src/mongo/secrets/express/username.txt.example](./onion-website/src/mongo/secrets/express/username.txt.example)
 - [./onion-website/src/mongo/secrets/express/password.txt.example](./onion-website/src/mongo/secrets/express/password.txt.example)
+- [./onion-website/src/onionprobe/config.yml.example](./onion-website/src/onionprobe/config.yml.example)
 - [./secrets/.env.example](./secrets/.env.example)
 
 The same goes with these files, except that these values should be memorable:
 
 - [./onion-website/src/mongo/secrets/dev/username.txt.example](./onion-website/src/mongo/secrets/dev/username.txt.example)
 - [./onion-website/src/mongo/secrets/dev/password.txt.example](./onion-website/src/mongo/secrets/dev/password.txt.example)
+- [./onion-website/src/grafana/secrets/username.txt.example](./onion-website/src/grafana/secrets/username.txt.example)
+- [./onion-website/src/grafana/secrets/password.txt.example](./onion-website/src/grafana/secrets/password.txt.example)
+- [./onion-website/src/grafana/secrets/email.txt.example](./onion-website/src/grafana/secrets/email.txt.example)
 
 Although this project will work with the example credentials
 in each of these files, **for your own security, please change them.**
@@ -51,7 +55,9 @@ If successful, you should see the following output:
 ```
 
 Finally, `cd` into `onion-website` and see:
-[Configuring an Onion Domain](./onion-website/README.md#tor)
+[Configuring an Onion Domain](./onion-website/README.md#tor).
+This domain will need to be put into `./onion-website/src/express/.env` and
+`./onion-website/src/onionprobe/config.yml`
 
 ## Commands
 
