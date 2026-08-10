@@ -20,7 +20,7 @@
         "build": "node --run=build:prod",
         "build:prod": "cross-env NODE_ENV=\"production\" tsx ./onion-website/src/express/webpack/index.ts",
         "build:dev": "cross-env NODE_ENV=\"development\" tsx ./onion-website/src/express/webpack/index.ts",
-        "tsc": "tsc --noEmit"
+        "tsc": "tsc"
     },
     "dependencies": {
         "cors": "^2.8.6",

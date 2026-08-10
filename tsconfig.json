@@ -6,8 +6,8 @@
             "ESNext",
 
             // Web interfaces
-            "dom",
-            "dom.iterable",
+            "DOM",
+            "DOM.iterable",
 
             // Asynchronicity and promises
             "ES2020.Promise",
@@ -16,14 +16,12 @@
         "allowJs": true,
         "checkJs": true,
         "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "module": "ES2022",
         "resolveJsonModule": true,
-        "noEmit": false,
+        "noEmit": true,
         "importHelpers": true,
         "newLine": "lf",
         "stripInternal": true,
