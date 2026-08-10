@@ -64,6 +64,8 @@ secrets:
     file: ./onion-website/src/mongo/secrets/dev/username.txt
   mongo-dev-password:
     file: ./onion-website/src/mongo/secrets/dev/password.txt
+  mongo-keyfile:
+    file: ./onion-website/src/mongo/secrets/keyFile.pem
 configs:
   mongo-replicas:
     file: ./onion-website/src/mongo/replicas.json

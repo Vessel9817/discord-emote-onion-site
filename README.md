@@ -7,6 +7,12 @@ and stickers.
 
 ## Setup
 
+> [!TIP]
+> The following setup instructions are mostly a copy-paste of the upstream
+> project instructions, located at `./onion-website`. For more information
+> about configuring an onion domain with this tool or for troubleshooting,
+> see the [onion-website README](./onion-website/README.md#configuring-secrets)
+
 Rename the following files to remove the `.example` postfix:
 
 - [./onion-website/src/mongo/secrets/.env.example](./onion-website/src/mongo/secrets/.env.example)
@@ -24,8 +30,28 @@ The same goes with these files, except that these values should be memorable:
 Although this project will work with the example credentials
 in each of these files, **for your own security, please change them.**
 
-For more information about configuring an onion domain, see the
-[onion-website README](./onion-website/README.md#tor)
+Next, generate a keyfile through Linux:
+
+```sh
+# Generation
+openssl rand -base64 756 > ./onion-website/src/mongo/secrets/keyFile.pem
+chmod 0400 ./onion-website/src/mongo/secrets/keyFile.pem
+sudo chown 999:999 ./onion-website/src/mongo/secrets/keyFile.pem
+
+# Tests
+stat -c %a ./onion-website/src/mongo/secrets/keyFile.pem
+stat -c %u:%g ./onion-website/src/mongo/secrets/keyFile.pem
+```
+
+If successful, you should see the following output:
+
+```log
+400
+999:999
+```
+
+Finally, `cd` into `onion-website` and see:
+[Configuring an Onion Domain](./onion-website/README.md#tor)
 
 ## Commands
 
