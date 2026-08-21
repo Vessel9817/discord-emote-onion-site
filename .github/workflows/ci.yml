@@ -4,8 +4,8 @@ on:
   push:
 
 env:
-  DOCKER_VERSION: v29.6.2
-  DOCKER_COMPOSE_VERSION: v5.3.1
+  DOCKER_VERSION: v29.7.2
+  DOCKER_COMPOSE_VERSION: v5.4.0
 
 jobs:
   # Builds Docker compose services
