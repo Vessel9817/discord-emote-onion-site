@@ -56,8 +56,7 @@ If successful, you should see the following output:
 
 Finally, `cd` into `onion-website` and see:
 [Configuring an Onion Domain](./onion-website/README.md#tor).
-This domain will need to be put into `./onion-website/src/express/.env` and
-`./onion-website/src/onionprobe/config.yml`
+This domain will need to be put into `./onion-website/src/onionprobe/config.yml`
 
 ## Commands
 
