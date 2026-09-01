@@ -15,7 +15,8 @@
         "url": "https://github.com/Vessel9817/discord-emote-onion-site/issues"
     },
     "scripts": {
-        "test": "mocha --exit --fail-zero test/**/*.spec.ts",
+        "test": "tsx --test \"./test/*.spec.ts\"",
+        "test:coverage": "tsx --experimental-test-coverage --test-coverage-exclude=\"test/**\" --test-coverage-exclude=\"onion-website/**\" --test \"./test/*.spec.ts\"",
         "start": "node --env-file=./secrets/.env ./dist/index.cjs",
         "build": "node --run=build:prod",
         "build:prod": "cross-env NODE_ENV=\"production\" tsx ./onion-website/src/express/webpack/index.ts",

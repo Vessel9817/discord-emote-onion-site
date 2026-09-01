@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install node modules
-        run: npm ci
+        run: npm ci --no-fund
       - name: Run tsc
         run: npm run tsc
   # Checks for dependency conflicts that `npm ci` would miss
@@ -85,4 +85,4 @@ jobs:
       - name: Install node modules
         run: npm ci --no-fund
       - name: Run tests
-        run: npm test
+        run: npm test:coverage
