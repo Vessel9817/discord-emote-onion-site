@@ -85,4 +85,4 @@ jobs:
       - name: Install node modules
         run: npm ci --no-fund
       - name: Run tests
-        run: npm test:coverage
+        run: npm run test:coverage
