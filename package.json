@@ -23,14 +23,12 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "cors": "^2.8.6",
         "ejs": "^6.0.1",
         "express": "^5.2.1",
         "express-validator": "^7.3.2",
         "mongoose": "^9.9.4"
     },
     "devDependencies": {
-        "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
         "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^26.4.0",
