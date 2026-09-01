@@ -1,6 +1,0 @@
-{
-    "node-option": [
-        "no-strip-types",
-        "import=tsx"
-    ]
-}

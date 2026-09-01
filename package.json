@@ -15,7 +15,8 @@
         "url": "https://github.com/Vessel9817/discord-emote-onion-site/issues"
     },
     "scripts": {
-        "test": "mocha --exit --fail-zero test/**/*.spec.ts",
+        "test": "tsx --test \"./test/**/*.spec.ts\"",
+        "test:coverage": "tsx --experimental-test-coverage --test-coverage-exclude=\"test/**\" --test-coverage-exclude=\"onion-website/**\" --test \"./test/**/*.spec.ts\"",
         "start": "node --env-file=./secrets/.env ./dist/index.cjs",
         "build": "node --run=build:prod",
         "build:prod": "cross-env NODE_ENV=\"production\" tsx ./onion-website/src/express/webpack/index.ts",
@@ -23,21 +24,17 @@
         "tsc": "tsc"
     },
     "dependencies": {
-        "cors": "^2.8.6",
         "ejs": "^6.0.1",
         "express": "^5.2.1",
         "express-validator": "^7.3.2",
         "mongoose": "^9.9.4"
     },
     "devDependencies": {
-        "@types/cors": "^2.8.19",
         "@types/express": "^5.0.6",
-        "@types/mocha": "^10.0.10",
         "@types/mongodb-memory-server": "^1.8.0",
         "@types/node": "^26.4.0",
         "@typescript/native": "npm:typescript@^7.0.2",
         "cross-env": "^10.1.0",
-        "mocha": "^12.0.0",
         "mongodb-memory-server": "^11.2.0",
         "terser-webpack-plugin": "^5.6.1",
         "ts-loader": "^9.6.2",
