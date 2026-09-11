@@ -1,5 +1,6 @@
 # Discord Emote Onion Site
 
+[![MIT license][license-badge]](LICENSE.md)
 [![CI][ci-badge]][ci-workflow]
 
 A basic tor website where users can save and search for Discord emojis
@@ -96,5 +97,6 @@ and [Start (production)](#start-production).
 docker compose --profile production --profile development down --remove-orphans
 ```
 
+[license-badge]: https://raw.githubusercontent.com/Vessel9817/discord-emote-onion-site/refs/heads/main/license.svg
 [ci-workflow]: https://github.com/Vessel9817/discord-emote-onion-site/actions/workflows/ci.yml
 [ci-badge]: https://github.com/Vessel9817/discord-emote-onion-site/actions/workflows/ci.yml/badge.svg
