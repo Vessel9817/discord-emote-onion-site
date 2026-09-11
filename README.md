@@ -97,6 +97,6 @@ and [Start (production)](#start-production).
 docker compose --profile production --profile development down --remove-orphans
 ```
 
-[license-badge]: https://raw.githubusercontent.com/Vessel9817/discord-emote-onion-site/refs/heads/main/license.svg
+[license-badge]: https://raw.githubusercontent.com/Vessel9817/discord-emote-onion-site/refs/heads/main/badge.svg
 [ci-workflow]: https://github.com/Vessel9817/discord-emote-onion-site/actions/workflows/ci.yml
 [ci-badge]: https://github.com/Vessel9817/discord-emote-onion-site/actions/workflows/ci.yml/badge.svg
