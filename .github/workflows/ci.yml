@@ -2,6 +2,7 @@ name: CI
 
 on:
   push:
+  pull_request:
 
 env:
   DOCKER_VERSION: v29.8.0
