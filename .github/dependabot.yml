@@ -5,16 +5,21 @@
 
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: npm
+    directory: /
     schedule:
-      interval: "daily" # weekdays
-  - package-ecosystem: "docker"
-    directory: "/"
+      interval: cron
+      cronjob: 0 0 * * * # Daily
+      timezone: UTC
+  - package-ecosystem: docker
+    directory: /
     schedule:
-      interval: "daily"
-  - package-ecosystem: "github-actions"
-    directory: "/"
+      interval: cron
+      cronjob: 0 0 * * * # Daily
+      timezone: UTC
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
-
+      interval: cron
+      cronjob: 0 0 * * * # Daily
+      timezone: UTC
