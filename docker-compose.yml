@@ -12,8 +12,6 @@ services:
     extends:
       service: nginx-debug
       file: ./onion-website/docker-compose.yml
-    ports: !override
-      - 127.0.0.1::80
   express:
     extends:
       service: express
@@ -27,8 +25,6 @@ services:
     extends:
       service: express-debug
       file: ./onion-website/docker-compose.yml
-    ports: !override
-      - 127.0.0.1::3000
   mongo-init:
     extends:
       service: mongo-init
@@ -49,8 +45,6 @@ services:
     extends:
       service: mongo-debug
       file: ./onion-website/docker-compose.yml
-    ports: !override
-      - 127.0.0.1::8081
   onionprobe:
     extends:
       file: ./onion-website/docker-compose.yml
@@ -63,18 +57,6 @@ services:
     extends:
       file: ./onion-website/docker-compose.yml
       service: grafana
-    ports: !override
-      - '127.0.0.1::3000'
-    environment:
-      # No anonymous usage statistics
-      GF_ANALYTICS_REPORTING_ENABLED: false
-      # Mitigate network discovery
-      GF_AUTH_ANONYMOUS_HIDE_VERSION: true
-      GF_METRICS_ENABLED: false
-      # Disable pings to grafana.com
-      GF_ANALYTICS_CHECK_FOR_UPDATES: false
-      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: false
-      GF_PLUGINS_PREINSTALL_DISABLED: true
 secrets:
   tor-hostname:
     file: ./onion-website/src/tor/secrets/hostname
