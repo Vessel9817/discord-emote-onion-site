@@ -79,7 +79,7 @@ secrets:
   tor-hostname:
     file: ./onion-website/src/tor/secrets/hostname
   express:
-    file: ./secrets/
+    file: ./secrets/.env
   mongo-config:
     file: ./onion-website/src/mongo/secrets/.env
   mongo-keyfile:
