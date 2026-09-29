@@ -75,7 +75,7 @@ Exposes the website to the tor network.
 Can be executed before or after [Start (development)](#start-development).
 
 ```shell
-docker compose --profile production up -d tor
+docker compose --profile production --profile monitor up -d tor
 ```
 
 ### Start (development)
@@ -94,7 +94,7 @@ Undoes both [Start (development)](#start-development)
 and [Start (production)](#start-production).
 
 ```shell
-docker compose --profile production --profile development down --remove-orphans
+docker compose --profile production  --profile monitor --profile development down --remove-orphans
 ```
 
 [license-badge]: https://raw.githubusercontent.com/Vessel9817/discord-emote-onion-site/refs/heads/main/badge.svg

@@ -10,4 +10,4 @@
 **/*.example
 onion-website
 !onion-website/src/express/webpack
-test
+**/test

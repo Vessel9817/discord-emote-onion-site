@@ -31,7 +31,7 @@ jobs:
         with:
           version: ${{ env.DOCKER_COMPOSE_VERSION }}
       - name: Build Compose stack
-        run: docker compose --profile production --profile development build
+        run: docker compose --profile production --profile monitor --profile development build
   # Runs a TypeScript type check
   tsc:
     permissions:

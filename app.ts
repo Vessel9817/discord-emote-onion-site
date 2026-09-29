@@ -1,11 +1,8 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import { emotes } from './env';
 import { csp, errorHandler } from './middleware';
 import { appRouter, notFoundRouter } from './routes/index';
 
 const app = express();
-const port = 3000;
 
 app.set('view engine', 'ejs');
 
@@ -20,14 +17,4 @@ app.use('/', appRouter); // Serves app
 app.use('/', notFoundRouter); // Catches 404 errors
 app.use('/', errorHandler); // Catches errors, preventing stack trace leaks
 
-// Starting server
-try {
-    await mongoose.connect(emotes.uri);
-}
-catch (err) {
-    console.error('Failed to connect to database:', err);
-}
-
-app.listen(port, () => {
-    console.log('Server is running!');
-});
+export default app;
