@@ -55,9 +55,9 @@ If successful, you should see the following output:
 999:999
 ```
 
-Finally, `cd` into `onion-website` and see:
+Finally, `cd` into `./onion-website` and see:
 [Configuring an Onion Domain](./onion-website/README.md#tor).
-This domain will need to be put into `./onion-website/src/onionprobe/config.yml`
+This domain will need to be put into `./src/onionprobe/config.yml`
 
 ## Commands
 
