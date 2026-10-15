@@ -1,4 +1,5 @@
 {
+    "$schema": "https://www.schemastore.org/package.json",
     "name": "discord-emote-onion-site_",
     "version": "0.0.0",
     "license": "MIT",

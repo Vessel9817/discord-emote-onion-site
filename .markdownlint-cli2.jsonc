@@ -1,10 +1,13 @@
-// https://github.com/DavidAnson/markdownlint-cli2?tab=readme-ov-file#markdownlint-cli2jsonc
 {
+    "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.3/schema/markdownlint-cli2-config-schema.json",
     "config": {
         "line-length": false,
         "no-hard-tabs": true
     },
     "globs": [
+        "**/*.{md,markdown}",
+        "!**/node_modules",
+        "!onion-website",
         // Ignore LICENSE files, because they shouldn't be modified
         "!**/LICENSE*",
         "!**/*.license"
