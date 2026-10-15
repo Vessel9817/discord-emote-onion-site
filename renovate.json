@@ -1,0 +1,40 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "npm": {
+    "enabled": false
+  },
+  "git-submodules": {
+    "enabled": true
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Docker Engine version used by CI",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/ci\\.yml$/"
+      ],
+      "matchStrings": [
+        "DOCKER_VERSION: (?<currentValue>v\\S+)"
+      ],
+      "depNameTemplate": "docker",
+      "packageNameTemplate": "moby/moby",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^docker-(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Docker Compose version used by CI",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/ci\\.yml$/"
+      ],
+      "matchStrings": [
+        "DOCKER_COMPOSE_VERSION: (?<currentValue>v\\S+)"
+      ],
+      "depNameTemplate": "docker/compose",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
