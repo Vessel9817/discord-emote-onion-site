@@ -1,5 +1,5 @@
 import { type ErrorRequestHandler, type RequestHandler } from 'express';
-import { http } from '../utils/constants';
+import { http } from '../onion-website/src/express/utils/constants';
 
 /**
  * Displays an internal error page
