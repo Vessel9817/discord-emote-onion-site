@@ -94,32 +94,43 @@ volumes:
   grafana-storage:
 networks:
   tor:
+    # Aligns with onion-website
+    internal: true
     ipam:
       config:
-        # Aligns with onion-website
         - subnet: 10.5.3.0/24 # 10.5.3.*
           gateway: 10.5.3.1
   nginx:
+    # Aligns with onion-website
+    internal: true
     ipam:
       config:
-        # Aligns with onion-website
         - subnet: 10.5.0.0/24 # 10.5.0.*
           gateway: 10.5.0.1
   express:
+    # Aligns with onion-website
+    internal: true
     ipam:
       config:
-        # Aligns with onion-website
         - subnet: 10.5.2.0/24 # 10.5.2.*
           gateway: 10.5.2.1
   mongo:
+    # Aligns with onion-website
+    internal: true
     ipam:
       config:
-        # Aligns with onion-website
         - subnet: 10.5.1.0/24 # 10.5.1.*
           gateway: 10.5.1.1
   metrics:
+    # Aligns with onion-website
+    internal: true
     ipam:
       config:
-        # Aligns with onion-website # 10.5.4.*
-        - subnet: 10.5.4.0/24
+        - subnet: 10.5.4.0/24 # 10.5.4.*
           gateway: 10.5.4.1
+  debug:
+    # Aligns with onion-website
+    ipam:
+      config:
+        - subnet: 10.5.5.0/24
+          gateway: 10.5.5.1
