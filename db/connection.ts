@@ -31,14 +31,8 @@ export async function connect(
         const name = err instanceof Error ? err.name : 'unknown error';
 
         console.error(`Database connection failed (${name}), retrying`);
+        // Mongoose can fail after the driver connected, as on a '.' in the database name
+        await mongoose.connection.close().catch(() => undefined);
         setTimeout(() => void connect(uri, retryMs), retryMs);
     }
-}
-
-/**
- * Reconnects whenever the database drops the connection
- * @param uri The connection string
- */
-export function reconnectOnDisconnect(uri: string): void {
-    mongoose.connection.on('disconnected', () => void connect(uri));
 }
