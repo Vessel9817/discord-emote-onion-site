@@ -9,5 +9,5 @@
 **/debug/
 **/*.example
 onion-website
-!onion-website/src/express/webpack
+!onion-website/src/express
 **/test

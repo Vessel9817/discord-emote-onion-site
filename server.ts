@@ -1,6 +1,6 @@
 import app from './app';
-import { connect } from './db/connection';
 import { emotes } from './env';
+import { connect } from './onion-website/src/express/db/connection';
 
 const port = 3000;
 
