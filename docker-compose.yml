@@ -43,10 +43,6 @@ services:
     extends:
       service: mongo-3
       file: ./onion-website/docker-compose.yml
-  mongo-debug:
-    extends:
-      service: mongo-debug
-      file: ./onion-website/docker-compose.yml
   onionprobe:
     extends:
       file: ./onion-website/docker-compose.yml
@@ -76,10 +72,6 @@ secrets:
     file: ./onion-website/src/mongo/secrets/express/username.txt
   mongo-password:
     file: ./onion-website/src/mongo/secrets/express/password.txt
-  mongo-dev-username:
-    file: ./onion-website/src/mongo/secrets/dev/username.txt
-  mongo-dev-password:
-    file: ./onion-website/src/mongo/secrets/dev/password.txt
   grafana-admin-username:
     file: ./onion-website/src/grafana/secrets/username.txt
   grafana-admin-password:

@@ -26,8 +26,6 @@ Rename the following files to remove the `.example` postfix:
 
 The same goes with these files, except that these values should be memorable:
 
-- [./onion-website/src/mongo/secrets/dev/username.txt.example](./onion-website/src/mongo/secrets/dev/username.txt.example)
-- [./onion-website/src/mongo/secrets/dev/password.txt.example](./onion-website/src/mongo/secrets/dev/password.txt.example)
 - [./onion-website/src/grafana/secrets/username.txt.example](./onion-website/src/grafana/secrets/username.txt.example)
 - [./onion-website/src/grafana/secrets/password.txt.example](./onion-website/src/grafana/secrets/password.txt.example)
 - [./onion-website/src/grafana/secrets/email.txt.example](./onion-website/src/grafana/secrets/email.txt.example)
