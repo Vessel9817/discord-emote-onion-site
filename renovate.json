@@ -3,9 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "npm": {
-    "enabled": false
-  },
   "git-submodules": {
     "enabled": true
   },
@@ -35,6 +32,18 @@
       ],
       "depNameTemplate": "docker/compose",
       "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "description": "markdownlint-cli2 schema version",
+      "managerFilePatterns": [
+        "/^src/markdownlint/\\.markdownlint-cli2\\.jsonc$/"
+      ],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/DavidAnson/markdownlint-cli2/(?<currentValue>v\\S+)/schema/markdownlint-cli2-config-schema\\.json"
+      ],
+      "depNameTemplate": "DavidAnson/markdownlint-cli2",
+      "datasourceTemplate": "github-tags"
     }
   ]
 }
