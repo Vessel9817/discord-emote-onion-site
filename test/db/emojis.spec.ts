@@ -1,20 +1,17 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { DISCORD_EPOCH, Emojis, MAX_LONG } from '../../db';
+import { mockMongooseCollection } from './mock-mongoose';
 
 describe('Emojis collection', () => {
-    let mongod: MongoMemoryServer;
+    let restoreModel: () => void;
 
-    beforeEach(async () => {
-        mongod = await MongoMemoryServer.create();
-        await mongoose.connect(mongod.getUri());
+    beforeEach(() => {
+        restoreModel = mockMongooseCollection<Emojis.Emoji>(Emojis.Model);
     });
 
-    afterEach(async () => {
-        await mongoose.disconnect();
-        await mongod.stop();
+    afterEach(() => {
+        restoreModel();
     });
 
     describe('validate', () => {
