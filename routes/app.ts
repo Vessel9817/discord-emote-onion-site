@@ -1,6 +1,6 @@
 import express from 'express';
-import { HomeController } from '../controllers/index';
-import { errorHandler } from '../middleware/index';
+import { HomeController } from '../controllers';
+import { errorHandler } from '../middleware';
 
 const router = express.Router();
 

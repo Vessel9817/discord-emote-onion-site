@@ -1,6 +1,6 @@
 import express from 'express';
 import { csp, errorHandler } from './middleware';
-import { appRouter, notFoundRouter } from './routes/index';
+import { appRouter, notFoundRouter } from './routes';
 
 const app = express();
 

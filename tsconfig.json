@@ -1,43 +1,12 @@
 {
     "$schema": "https://www.schemastore.org/tsconfig.json",
+    "extends": "./onion-website/src/express/tsconfig.json",
     "compilerOptions": {
-        "target": "ES2022",
-        "lib": [
-            // General JS
-            "ESNext",
-
-            // Web interfaces
-            "DOM",
-            "DOM.iterable",
-
-            // Asynchronicity and promises
-            "ES2020.Promise",
-            "ESNext.asynciterable"
-        ],
-        "allowJs": true,
-        "checkJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": true,
-        "module": "ES2022",
-        "resolveJsonModule": true,
+        "rootDir": ".",
+        "outDir": "dist", // See also: https://stackoverflow.com/a/48798945
         "noEmit": true,
-        "importHelpers": true,
-        "newLine": "lf",
-        "stripInternal": true,
-        "outDir": "dist"
+        "composite": false
     },
     "include": ["**/*"],
-    "exclude": [
-        "**/coverage/",
-        "**/licenses/",
-        "**/logs/",
-        "**/node_modules/",
-        "**/secrets/",
-        "**/temp/",
-        "**/tmp/",
-        "**/dist/",
-        "onion-website/"
-    ]
+    "exclude": ["onion-website/"]
 }

@@ -2,7 +2,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it } from 'node:test';
-import { DISCORD_EPOCH, MAX_LONG, Stickers } from '../../db/index';
+import { DISCORD_EPOCH, MAX_LONG, Stickers } from '../../db';
 
 describe('Stickers collection', () => {
     let mongod: MongoMemoryServer;

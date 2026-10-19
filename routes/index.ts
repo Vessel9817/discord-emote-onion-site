@@ -1,7 +1,4 @@
 import appRouter from './app';
-import notFoundRouter from './notFound';
+export { notFoundRouter } from '../onion-website/src/express/routes';
 
-export {
-    appRouter,
-    notFoundRouter
-};
+export { appRouter };
