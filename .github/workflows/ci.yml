@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  DOCKER_VERSION: v29.9.2
+  DOCKER_VERSION: v29.9.3
   DOCKER_COMPOSE_VERSION: v5.6.1
 
 jobs:
