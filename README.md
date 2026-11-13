@@ -22,6 +22,7 @@ Rename the following files to remove the `.example` postfix:
 - [./onion-website/src/mongo/secrets/express/username.txt.example](./onion-website/src/mongo/secrets/express/username.txt.example)
 - [./onion-website/src/mongo/secrets/express/password.txt.example](./onion-website/src/mongo/secrets/express/password.txt.example)
 - [./onion-website/src/onionprobe/config.yml.example](./onion-website/src/onionprobe/config.yml.example)
+- [./onion-website/src/onionprobe/prometheus-tests.yml.example](./onion-website/src/onionprobe/prometheus-tests.yml.example)
 - [./secrets/.env.example](./secrets/.env.example)
 
 The same goes with these files, except that these values should be memorable:
@@ -55,7 +56,9 @@ If successful, you should see the following output:
 
 Finally, `cd` into `./onion-website` and see:
 [Configuring an Onion Domain](./onion-website/README.md#tor).
-This domain will need to be put into `./src/onionprobe/config.yml`
+This domain will need to be put into `src/onionprobe/config.yml`
+and `src/onionprobe/prometheus-tests.yml` where the placeholder onion address
+`abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh.onion` is present.
 
 ## Commands
 
