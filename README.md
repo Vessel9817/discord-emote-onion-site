@@ -56,8 +56,8 @@ If successful, you should see the following output:
 
 Finally, `cd` into `./onion-website` and see:
 [Configuring an Onion Domain](./onion-website/README.md#tor).
-This domain will need to be put into `src/onionprobe/config.yml`
-and `src/onionprobe/prometheus-tests.yml` where the placeholder onion address
+This domain will need to be put into `./src/onionprobe/config.yml`
+and `./src/onionprobe/prometheus-tests.yml` where the placeholder onion address
 `abcdefghabcdefghabcdefghabcdefghabcdefghabcdefghabcdefgh.onion` is present.
 
 ## Commands
